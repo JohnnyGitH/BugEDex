@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MatTableModule, MatButtonModule } from '@angular/material'
 import { Bug } from './models/bug.model';
-import { MatTableDataSource } from '@angular/material'
+import { MatTableDataSource } from '@angular/material/table'
 
 
 @Component({
