@@ -13,15 +13,20 @@ export class BugComponent implements OnInit {
 
   // Testing this piece of shit before I get real data.
   bugArray: Bug[] =
-    [{ "title": "0", "type": "Available", "description": "1" },
-    { "title": "1", "type": "Ready",  "description": "1"},
-    { "title": "2", "type": "Started", "description": "1"}
-];
+    [
+      { title: "0", type: "Available", description: "1" },
+      { title: "1", type: "Ready",  description: "1"},
+      { title: "2", type: "Started", description: "1"}
+    ];
 
   bugTableDataSource: MatTableDataSource<Bug> = new MatTableDataSource<Bug>([]);
   constructor() { }
 
   ngOnInit(): void {
+    this.loadBugs();
+  }
+
+  loadBugs(): void{
     this.bugTableDataSource.data = this.bugArray;
   }
 
