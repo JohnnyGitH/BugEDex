@@ -1,17 +1,21 @@
 <p>bug works!</p>
-<div>
-  <table mat-table [dataSource]="this.bugTableDataSource">
-     <ng-container matColumnDef="title">
-       <th mat-header-cell *matHeaderCellDef scope="col"> Name </th>
-       <td mat-cell *matCellDef="let bug">{{bug.title}}</td>
-     </ng-container>
-     <ng-container matColumnDef="type">
-       <th mat-header-cell *matHeaderCellDef scope="col"> Type </th>
-       <td mat-cell *matCellDef="let bug">{{bug.type}}</td>
-     </ng-container>
-     <ng-container matColumnDef="description">
-       <th mat-header-cell *matHeaderCellDef scope="col"> Description </th>
-       <td mat-cell *matCellDef="let bug">{{bug.description}}</td>
-     </ng-container>
-   </table>
- </div>
+
+<table mat-table [dataSource]="this.bugTableDataSource" class="mat-elevation-z8">
+    <!-- bug Title column-->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef scope="col"> Name </th>
+      <td mat-cell *matCellDef="let bug">{{bug.title}}</td>
+    </ng-container>
+    <!-- bug Type column-->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef scope="col"> Type </th>
+      <td mat-cell *matCellDef="let bug">{{bug.type}}</td>
+    </ng-container>
+    <!-- bug Description column-->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef scope="col"> Description </th>
+      <td mat-cell *matCellDef="let bug">{{bug.description}}</td>
+    </ng-container>
+
+</table>
+
