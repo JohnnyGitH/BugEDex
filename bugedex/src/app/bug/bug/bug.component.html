@@ -1,6 +1,7 @@
 <p>bug works!</p>
 
-<table mat-table [dataSource]="this.bugTableDataSource" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
     <!-- bug Title column-->
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef scope="col"> Name </th>
