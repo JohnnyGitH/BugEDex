@@ -8,6 +8,7 @@ import { Bug } from './models/bug.model';
       { title: "1", type: "Ready",  description: "1"},
       { title: "2", type: "Started", description: "1"}
     ];
+
 /**
  * This component is responsible for displaying the bug
  * data from the api onto a table
@@ -18,7 +19,8 @@ import { Bug } from './models/bug.model';
   styleUrls: ['./bug.component.css']
 })
 export class BugComponent implements OnInit {
-  columns: string[] = ["title", "type", "description"];
+  displayedColumns: string[] = ["title", "type", "description"];
+
   // data for the component template table
   dataSource = BUG_ARRAY;
 
