@@ -25,3 +25,41 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+
+# BugEdex
+Example of the response object from the API
+```json
+ {
+        "name": "Common Butterfly",
+        "location": "Flying",
+        "time": "4 AM - 7 PM",
+        "price": 160,
+        "month": {
+            "north": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                9,
+                10,
+                11,
+                12
+            ],
+            "south": [
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12
+            ]
+        }
+    }
+```

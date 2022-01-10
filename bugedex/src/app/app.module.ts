@@ -4,8 +4,8 @@ import { MatTableModule } from '@angular/material/table'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { BugComponent } from './bug/bug/bug.component';
 import { CdkTableModule } from '@angular/cdk/table';
+import { BugComponent } from './bug/bug.component';
 
 @NgModule({
   declarations: [
