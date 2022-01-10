@@ -21,6 +21,7 @@ export class BugComponent implements OnInit {
 
   // When the page initializes, we want to load the bugs into the table
   ngOnInit(): void {
+    console.log("ngOnInit loading up buggies");
     this.loadBugs();
   }
 
@@ -30,6 +31,7 @@ export class BugComponent implements OnInit {
   loadBugs() {
     this.bugService.getBugs().subscribe({
       next: (bugs) => {
+        console.log("Is this my bug array? "+ bugs); // Bugs are here, Check formatting, and Bug Object
         this.dataSource = bugs.bugs;
       },
     });

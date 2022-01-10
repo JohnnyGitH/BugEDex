@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
-import { BugDTO } from './models/bug.dto.model';
 import { BugsDTO } from './models/bugs.dto.model';
 
 const endpoint = "/data/v1/bug.json";
