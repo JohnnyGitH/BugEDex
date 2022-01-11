@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
 import { BugsDTO } from './models/bugs.dto.model';
+import { Bug } from './models/bug.model';
 
 const endpoint = "/data/v1/bug.json";
 const baseUrl = "https://www.xhsun.me/acnh-api/";
@@ -19,9 +20,9 @@ export class BugDataService {
    * 
    * @returns Observable of BugDTO
    */
-  getBugs(): Observable<BugsDTO> {
+  getBugs(): Observable<Bug[]> {
     console.log("GET Request for Bugs");
     return this.http
-            .get<BugsDTO>(baseUrl.concat(endpoint));
+            .get<Bug[]>(baseUrl.concat(endpoint));
   }
 }

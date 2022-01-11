@@ -15,46 +15,7 @@ export class BugService {
 
   constructor(private dataService: BugDataService) { }
 
-  getBugs(): Observable<Bugs> {
+  getBugs(): Observable<Bug[]> {
     console.log("Bug Service, preparing for bug component");
     return this.dataService.getBugs();
   }}
-
-
-
-
-
-/** 
-                .pipe(
-                  (bugdtos) => ({
-                    bugdtos.map(
-                      (bug) =>
-                      ({
-                        b
-                      })
-                      
-                    )
-                  } )
-                );
-  }
-}
-
-*/
-
-/**
- *   getBugs(): Observable<Bug> {
-    return this.dataService.getBugs()
-                .pipe(
-                  (bugdtos) => ({
-                    name: bugdtos.,
-                    location: bugdtos.location,
-                    time: bugdtos.time,
-                    price: bugdtos.price,
-                    month: bugdtos.timeOfMonth,
-                  } as Bug)
-                );
-  }
-}
- * 
- * 
- */

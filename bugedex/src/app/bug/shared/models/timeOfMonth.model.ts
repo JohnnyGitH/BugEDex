@@ -18,5 +18,11 @@
  export interface TimeOfMonth {
     north: NorthernHemisphereSchedule
     south: SouthernHemisphereSchedule
-    //[k: string]: unknown
   }
+
+  /**
+   * 
+   * interface month
+   * north:number[]
+   * south:number[]
+   */
