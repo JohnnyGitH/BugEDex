@@ -16,6 +16,7 @@ export class BugComponent implements OnInit {
 
   // data for the component template table
   dataSource: Bug[] = [];
+  chosenBug: Bug;
 
   constructor(private bugService: BugService) {}
 
@@ -30,7 +31,7 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.bugService.getBugs().subscribe( bugsFromService => {
-        console.log("Loading Bugs method in Bug component, loadBugs()");
+        console.log("Loading Bugs method in Bug component, loadBugs()"),
         this.dataSource = bugsFromService;
       },
     )}

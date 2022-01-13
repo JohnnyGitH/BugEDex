@@ -8,11 +8,13 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { BugComponent } from './bug/bug.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCommonModule } from '@angular/material/core';
+import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BugComponent,
+    BugDetailsComponent,
   ],
   imports: [
     BrowserModule,
