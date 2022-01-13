@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
-import { Bugs } from './models/bugs.model';
 
 @Injectable({
   providedIn: 'root'
