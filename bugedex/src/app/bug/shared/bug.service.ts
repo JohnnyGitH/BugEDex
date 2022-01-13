@@ -16,6 +16,6 @@ export class BugService {
   constructor(private dataService: BugDataService) { }
 
   getBugs(): Observable<Bug[]> {
-    console.log("Bug Service, preparing for bug component");
+    console.log("Bug Service, preparing for bug component, getBugs()");
     return this.dataService.getBugs();
   }}

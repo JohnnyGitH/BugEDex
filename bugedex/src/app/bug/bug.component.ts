@@ -12,7 +12,7 @@ import { Bug } from './shared/models/bug.model';
   styleUrls: ['./bug.component.css']
 })
 export class BugComponent implements OnInit {
-  displayedColumns: string[] = ["name", "location", "time", "price", "month"];
+  displayedColumns: string[] = ["name", "location", "time", "price", "monthn", "months", "caught"];
 
   // data for the component template table
   dataSource: Bug[] = [];
@@ -21,7 +21,6 @@ export class BugComponent implements OnInit {
 
   // When the page initializes, we want to load the bugs into the table
   ngOnInit(): void {
-    console.log("ngOnInit loading up buggies");
     this.loadBugs();
     console.log("After Bugs are loaded up");
   }
@@ -31,8 +30,7 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.bugService.getBugs().subscribe( bugsFromService => {
-        console.log("Load Bugs method in Bug component");
-        console.log("Is this my bug array? "+ bugsFromService); // Bugs are here, Check formatting, and Bug Object
+        console.log("Loading Bugs method in Bug component, loadBugs()");
         this.dataSource = bugsFromService;
       },
     )}

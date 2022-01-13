@@ -7,6 +7,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 import { BugComponent } from './bug/bug.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { MatCommonModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     MatTableModule,
     CdkTableModule,
     HttpClientModule,
+    MatCommonModule,
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]
