@@ -9,6 +9,7 @@ import { BugComponent } from './bug/bug.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCommonModule } from '@angular/material/core';
 import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.component';
+import { MatCardModule } from '@angular/material/card'
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.c
     CdkTableModule,
     HttpClientModule,
     MatCommonModule,
+    MatCardModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

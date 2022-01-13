@@ -4,8 +4,9 @@ import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.c
 import { BugComponent } from './bug/bug.component';
 
 const routes: Routes = [
-  { path: 'bug-component', component: BugComponent  },
-  { path: 'bug-details-component', component: BugDetailsComponent}
+  { path: '', component: BugComponent},
+  { path: 'bugs', component: BugComponent  },
+  { path: 'bug', component: BugDetailsComponent}
 ];
 
 @NgModule({

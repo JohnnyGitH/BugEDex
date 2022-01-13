@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -18,7 +19,7 @@ export class BugComponent implements OnInit {
   dataSource: Bug[] = [];
   chosenBug: Bug;
 
-  constructor(private bugService: BugService) {}
+  constructor(private bugService: BugService, private router: Router) {}
 
   // When the page initializes, we want to load the bugs into the table
   ngOnInit(): void {
@@ -35,4 +36,18 @@ export class BugComponent implements OnInit {
         this.dataSource = bugsFromService;
       },
     )}
+
+    /**
+     * Clicking on a bug should navigate to the details page
+     * with the bug name as a param
+     * @param bugName name of the selected bug
+     */
+    bugClick(bugName: string){
+      this.router.navigateByUrl("/bug?name="+bugName);
+    }
+
+    //TODO: Method handling the checkboxes
+    // Needs to handle checkmark event
+    // Should update the bug.caught property
+    // based on true or false
 }
