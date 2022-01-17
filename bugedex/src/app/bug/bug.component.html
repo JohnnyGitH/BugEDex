@@ -64,4 +64,12 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<button routerLink="/bug">ClickTestForDetailsPage</button>
+<p>
+  <button routerLink="/bug">ClickTestForDetailsPage</button>
+</p>
+<p>
+  <label>Local Array Length {{localBugCollection.length}}</label>
+</p>
+<p>
+  <label>Datasource Array Length {{dataSource.length}}</label>
+</p>

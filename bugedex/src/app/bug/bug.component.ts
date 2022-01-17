@@ -21,7 +21,7 @@ export class BugComponent implements OnInit {
   localBugCollection: Bug[] = [];
   dataSource: Bug[] = [];
   chosenBug: Bug;
-  //caughtBug: Bug;
+  caughtBug: Bug;
 
   constructor(private bugService: BugService, private router: Router) {}
 
@@ -43,6 +43,7 @@ export class BugComponent implements OnInit {
    * Loads local datasource for the table
    */
   localBugsToDataSource(): void {
+    console.log("localBugsToDatasource(): loading local source")
     this.dataSource = this.localBugCollection;
   }
 
@@ -52,7 +53,7 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.bugService.getBugs().subscribe( bugsFromService => {
-        console.log("loadBugs()"),
+        console.log("loadBugs(): loading Bug Service bugs"),
         this.localBugCollection = bugsFromService;
         this.dataSource = bugsFromService;
       },
@@ -76,12 +77,8 @@ export class BugComponent implements OnInit {
    */
   checkBugCaught(bugName: string) {
     console.log("bug.checkBugCaught() => "+bugName);
-     this.bugService.getBugs()
-    .pipe(
-      map( b =>
-        b.find( b2 => b2.name === bugName))
-    ).subscribe( s =>
-      s.caught? s.caught = true: s.caught = false
-      )
-    }
+    this.caughtBug = this.localBugCollection.find( bug => bug.name === bugName);
+    this.caughtBug.caught? this.caughtBug.caught = true: this.caughtBug.caught = false;
+    this.ngOnInit();
+  }
 }
