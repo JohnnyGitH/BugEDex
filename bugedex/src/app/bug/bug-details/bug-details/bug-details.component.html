@@ -11,7 +11,7 @@
         <p><label for="months">Months South: {{bug.month.south}}</label></p> 
         <p><label for="caught">Caught: 
             <!-- Need logic to set a checkbox-->
-            <input type="checkbox" >
+            <input type="checkbox" *ngIf>
         </label></p>
     </mat-card-content>
     <mat-card-actions>
@@ -19,4 +19,3 @@
     </mat-card-actions>
 </mat-card>
 </div>
-<!--*ngIf={{bug.caught}}-->

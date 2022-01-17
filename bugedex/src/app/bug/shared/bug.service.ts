@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  Observable } from 'rxjs';
+import {  map, Observable } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
 
@@ -17,4 +17,5 @@ export class BugService {
   getBugs(): Observable<Bug[]> {
     console.log("Bug Service, preparing for bug component, getBugs()");
     return this.dataService.getBugs();
-  }}
+                  }
+  }

@@ -13,6 +13,7 @@ import { Bug } from '../../shared/models/bug.model';
 export class BugDetailsComponent implements OnInit {
   //dataSource: Bug[] = [];
   bugName: string | null;
+  bugCaught: string | null;
   bug: Bug;
 
   constructor(private bugService: BugService,private route: ActivatedRoute) { }
@@ -21,15 +22,17 @@ export class BugDetailsComponent implements OnInit {
     this.route.queryParamMap.subscribe(
       params => {
         console.log(params);
-        this.bugName = params.get("name");  
+        this.bugName = params.get("name"); 
+        this.bugCaught = params.get("caught"); 
         this.bug = this.findBug(this.bugName);
         console.log(this.bug);
+        console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
       })
       
   }
 
   /**
-   * This method find the bug beging selected for
+   * This method finds the bug being selected for
    * the details page
    * @param bugName name from quary params
    */
@@ -47,5 +50,5 @@ export class BugDetailsComponent implements OnInit {
 
     // I think I need a checkbox method
     // To set the checkbox on the page
-      
+    // use query param again.
 }
