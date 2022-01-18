@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
+import { filter, find, map, single } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -18,7 +18,6 @@ export class BugComponent implements OnInit {
   displayedColumns: string[] = ["name", "location", "time", "price", "monthn", "months", "caught"];
 
   // data for the component template table
-  localBugCollection: Bug[] = [];
   dataSource: Bug[] = [];
   chosenBug: Bug;
   caughtBug: Bug;
@@ -31,20 +30,8 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    if(this.localBugCollection.length == 0){
-      console.log("ngOnInit.loadBugs()")
-      this.loadBugs();
-    }
-    this.localBugsToDataSource();
-    console.log("ngOnInit");
-  }
-
-  /**
-   * Loads local datasource for the table
-   */
-  localBugsToDataSource(): void {
-    console.log("localBugsToDatasource(): loading local source")
-    this.dataSource = this.localBugCollection;
+    console.log("ngOnInit.loadBugs()")
+    this.loadBugs();
   }
 
   /**
@@ -52,22 +39,20 @@ export class BugComponent implements OnInit {
    *  and datasource to populate table in the template
    */
   loadBugs() {
-    this.bugService.getBugs().subscribe( bugsFromService => {
-        console.log("loadBugs(): loading Bug Service bugs"),
-        this.localBugCollection = bugsFromService;
+    console.log("loadBugs(): loading Bug Service bugs");
+    this.bugService.getObservableBugs().subscribe( bugsFromService => {
         this.dataSource = bugsFromService;
+        console.log("dataSource =" + bugsFromService)
       },
     )}
 
   /**
-   *   
    * Clicking on a bug row should navigate to the details page
    * with the bug name as a param
    * @param bugName name of bug selected
-   * @param caught caught status T or F
    */
-  bugClick(bugName: string, caught: boolean){
-    this.router.navigateByUrl("/bug?name="+bugName+"&caught="+caught);
+  bugClick(bugName: string){
+    this.router.navigateByUrl("/bug?name="+bugName);
   }
 
   /**
@@ -77,8 +62,13 @@ export class BugComponent implements OnInit {
    */
   checkBugCaught(bugName: string) {
     console.log("bug.checkBugCaught() => "+bugName);
-    this.caughtBug = this.localBugCollection.find( bug => bug.name === bugName);
-    this.caughtBug.caught? this.caughtBug.caught = true: this.caughtBug.caught = false;
-    this.ngOnInit();
+    // Need to find the bug based on bugName - then ternary the caught
+    this.bugService.getObservableBugs().pipe(
+      map(b => 
+        b.find(bu => bu.name === bugName),// find selected bug
+       // b.caught? b.caught = false:b.caught = true
+        
+    ));
+    this.loadBugs();
   }
 }

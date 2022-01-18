@@ -35,16 +35,3 @@ export class BugDataService {
           )// pipe
   }
 }
-
-/**
- *             .pipe(
-              map( b => 
-                b.filter( bug => bug.time = "All day",
-                b => b.caught == false
-                )
-            )// map
-          )// pipe
- * 
- * 
- * 
- */

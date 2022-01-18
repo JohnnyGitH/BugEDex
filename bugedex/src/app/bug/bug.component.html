@@ -6,38 +6,38 @@
   <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug">{{bug.name}} </td>
+    <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug">{{bug.name}} </td>
   </ng-container>
 
   <!-- Location Column -->
   <ng-container matColumnDef="location">
     <th mat-header-cell *matHeaderCellDef> Location </th>
-    <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug"> {{bug.location}} </td>
+    <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug"> {{bug.location}} </td>
   </ng-container>
 
     <!-- Time Column -->
     <ng-container matColumnDef="time">
       <th mat-header-cell *matHeaderCellDef> Time </th>
-      <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug"> {{bug.time}} </td>
+      <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug"> {{bug.time}} </td>
     </ng-container>
 
   <!-- Price Column -->
   <ng-container matColumnDef="price">
     <th mat-header-cell *matHeaderCellDef> Price </th>
-    <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug"> {{bug.price}} </td>
+    <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug"> {{bug.price}} </td>
   </ng-container>
 
     <!-- North Month Column -->
     <ng-container matColumnDef="monthn">
       <th mat-header-cell *matHeaderCellDef>Time Of The Month - North </th>
-      <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug"> 
+      <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug"> 
         {{bug.month.north}} 
     </ng-container>
 
     <!-- Month Column -->
     <ng-container matColumnDef="months">
       <th mat-header-cell *matHeaderCellDef> Time Of The Month - South  </th>
-      <td mat-cell (click)="bugClick(bug.name, bug.caught)" *matCellDef="let bug"> 
+      <td mat-cell (click)="bugClick(bug.name)" *matCellDef="let bug"> 
         {{bug.month.south}}
       </td>
     </ng-container>
@@ -68,8 +68,5 @@
   <button routerLink="/bug">ClickTestForDetailsPage</button>
 </p>
 <p>
-  <label>Local Array Length {{localBugCollection.length}}</label>
-</p>
-<p>
-  <label>Datasource Array Length {{dataSource.length}}</label>
+  <!--<label>Datasource Array Length {{dataSource.length}}</label>-->
 </p>

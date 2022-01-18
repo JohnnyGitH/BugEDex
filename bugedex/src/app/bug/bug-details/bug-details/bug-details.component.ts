@@ -38,7 +38,7 @@ export class BugDetailsComponent implements OnInit {
    */
   findBug(bugName): any {
       console.log("findBug() => "+bugName);
-       this.bugService.getBugs()
+       this.bugService.getObservableBugs()
       .pipe(
         
         map( b =>
