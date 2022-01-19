@@ -28,10 +28,10 @@ export class BugDataService {
             .get<Bug[]>(baseUrl.concat(endpoint))
             .pipe(
               map( b => 
-                b.filter( bug => bug.time = "All day",
+                b.filter( bug => bug.time == "All day", // Getting bugs around All day
                 b.filter( bug => bug.caught = false) // Setting default to false
                 )
-            )// map
-          )// pipe
+            )
+          )
   }
 }

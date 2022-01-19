@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { filter, find, map, single } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { filter, find, map, Observable, single } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -21,8 +21,10 @@ export class BugComponent implements OnInit {
   dataSource: Bug[] = [];
   chosenBug: Bug;
   caughtBug: Bug;
+  data: Observable<Bug[]>;
+  persist: string | null;
 
-  constructor(private bugService: BugService, private router: Router) {}
+  constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table
@@ -30,6 +32,12 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe( params => { this.persist = params.get("state")})
+    if(this.persist != "t"){
+      console.log("persist is = ", this.persist)
+      this.bugService.getBugsData();// need to only do this the first time
+
+    }
     console.log("ngOnInit.loadBugs()")
     this.loadBugs();
   }
@@ -40,11 +48,12 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     console.log("loadBugs(): loading Bug Service bugs");
-    this.bugService.getObservableBugs().subscribe( bugsFromService => {
-        this.dataSource = bugsFromService;
-        console.log("dataSource =" + bugsFromService)
-      },
-    )}
+    this.data = this.bugService.state.getValue();
+    this.data.subscribe( data => {
+      console.log(data);
+      this.dataSource = data;
+    })
+    }
 
   /**
    * Clicking on a bug row should navigate to the details page
@@ -62,13 +71,15 @@ export class BugComponent implements OnInit {
    */
   checkBugCaught(bugName: string) {
     console.log("bug.checkBugCaught() => "+bugName);
-    // Need to find the bug based on bugName - then ternary the caught
-    this.bugService.getObservableBugs().pipe(
-      map(b => 
-        b.find(bu => bu.name === bugName),// find selected bug
-       // b.caught? b.caught = false:b.caught = true
-        
-    ));
+    this.data = this.bugService.state.getValue();
+    let updated = this.data.pipe(
+      map(bugs => {
+        const index = bugs.findIndex( bug => bug.name == bugName);
+        bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
+        return bugs;
+      })
+    )
+    this.bugService.state.next(updated);
     this.loadBugs();
   }
 }
