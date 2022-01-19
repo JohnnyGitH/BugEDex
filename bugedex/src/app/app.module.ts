@@ -10,6 +10,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatCommonModule } from '@angular/material/core';
 import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.component';
 import { MatCardModule } from '@angular/material/card'
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { MatCardModule } from '@angular/material/card'
     CdkTableModule,
     HttpClientModule,
     MatCommonModule,
-    MatCardModule
+    MatCardModule,
+    MatCheckboxModule
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

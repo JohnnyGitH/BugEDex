@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, find, map, Observable, single } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
 /**
  * This component is responsible for displaying the bug
- * data from the api onto a table
+ * data from the bug service onto a table
  */
 @Component({
   selector: 'app-bug',
@@ -13,41 +14,72 @@ import { Bug } from './shared/models/bug.model';
   styleUrls: ['./bug.component.css']
 })
 export class BugComponent implements OnInit {
+  // table columns
   displayedColumns: string[] = ["name", "location", "time", "price", "monthn", "months", "caught"];
 
   // data for the component template table
   dataSource: Bug[] = [];
   chosenBug: Bug;
+  caughtBug: Bug;
+  data: Observable<Bug[]>;
+  persist: string | null;
 
-  constructor(private bugService: BugService, private router: Router) {}
+  constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) {}
 
-  // When the page initializes, we want to load the bugs into the table
+  /**
+   * When the page initializes, we want to load the bugs into the table
+   * condition is if its first time, load bugs from API, otherwise
+   * from local datasource
+   */
   ngOnInit(): void {
+    this.route.queryParamMap.subscribe( params => { this.persist = params.get("state")})
+    if(this.persist != "t"){
+      console.log("persist is = ", this.persist)
+      this.bugService.getBugsData();// need to only do this the first time
+
+    }
+    console.log("ngOnInit.loadBugs()")
     this.loadBugs();
-    console.log("After Bugs are loaded up");
   }
 
   /**
-   * Loading the bugs into the table in the template
+   * Loading the bugs into the localBugCollection 
+   *  and datasource to populate table in the template
    */
   loadBugs() {
-    this.bugService.getBugs().subscribe( bugsFromService => {
-        console.log("Loading Bugs method in Bug component, loadBugs()"),
-        this.dataSource = bugsFromService;
-      },
-    )}
-
-    /**
-     * Clicking on a bug should navigate to the details page
-     * with the bug name as a param
-     * @param bugName name of the selected bug
-     */
-    bugClick(bugName: string){
-      this.router.navigateByUrl("/bug?name="+bugName);
+    console.log("loadBugs(): loading Bug Service bugs");
+    this.data = this.bugService.state.getValue();
+    this.data.subscribe( data => {
+      console.log(data);
+      this.dataSource = data;
+    })
     }
 
-    //TODO: Method handling the checkboxes
-    // Needs to handle checkmark event
-    // Should update the bug.caught property
-    // based on true or false
+  /**
+   * Clicking on a bug row should navigate to the details page
+   * with the bug name as a param
+   * @param bugName name of bug selected
+   */
+  bugClick(bugName: string){
+    this.router.navigateByUrl("/bug?name="+bugName);
+  }
+
+  /**
+   * This method finds the bug being selected for
+   * checkmark, and updates the caught property
+   * @param bugName name of bug selected
+   */
+  checkBugCaught(bugName: string) {
+    console.log("bug.checkBugCaught() => "+bugName);
+    this.data = this.bugService.state.getValue();
+    let updated = this.data.pipe(
+      map(bugs => {
+        const index = bugs.findIndex( bug => bug.name == bugName);
+        bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
+        return bugs;
+      })
+    )
+    this.bugService.state.next(updated);
+    this.loadBugs();
+  }
 }

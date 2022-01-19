@@ -10,13 +10,19 @@
         <p><label for="monthn">Months North: {{bug.month.north}}</label></p>
         <p><label for="months">Months South: {{bug.month.south}}</label></p> 
         <p><label for="caught">Caught: 
-            <!-- Need logic to set a checkbox-->
-            <input type="checkbox" >
+            <div *ngIf="bug.caught === true">
+                <mat-checkbox [checked]="true"></mat-checkbox>
+                <b>Health is checked.</b>
+             </div>   
+             <div *ngIf="bug.caught === false">
+              <mat-checkbox [checked]="false"></mat-checkbox>
+                <b>Trust is checked.</b>
+             </div>
+            <input type="checkbox" *ngIf>
         </label></p>
     </mat-card-content>
     <mat-card-actions>
-        <button routerLink="/bugs">Back to list</button>
+        <button (click)="backClick()"  routerLink="/bugs">Back to list</button>
     </mat-card-actions>
 </mat-card>
 </div>
-<!--*ngIf={{bug.caught}}-->

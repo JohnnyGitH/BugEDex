@@ -45,13 +45,25 @@
     <!-- Caught Column -->
     <ng-container matColumnDef="caught">
       <th mat-header-cell *matHeaderCellDef> Caught </th>
-      <td mat-cell *matCellDef="let bug">
-        {{bug.caught}}
-        <input type="checkbox">
+      <td mat-cell (click)="checkBugCaught(bug.name)" *matCellDef="let bug">
+        Is It caught?: {{bug.caught}}
+        <div *ngIf="bug.caught === true">
+          <mat-checkbox [checked]="true"></mat-checkbox>
+          <b>Health is checked.</b>
+       </div>   
+       <div *ngIf="bug.caught === false">
+        <mat-checkbox [checked]="false"></mat-checkbox>
+          <b>Trust is checked.</b>
+       </div>
       </td>
     </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<button routerLink="/bug">ClickTestForDetailsPage</button>
+<p>
+  <button routerLink="/bug">ClickTestForDetailsPage</button>
+</p>
+<p>
+  <!--<label>Datasource Array Length {{dataSource.length}}</label>-->
+</p>
