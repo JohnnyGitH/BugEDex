@@ -1,7 +1,6 @@
-import { DataSource } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
-import { map, observable, Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { BugService } from '../../shared/bug.service';
 import { Bug } from '../../shared/models/bug.model';
 
@@ -11,21 +10,25 @@ import { Bug } from '../../shared/models/bug.model';
   styleUrls: ['./bug-details.component.css']
 })
 export class BugDetailsComponent implements OnInit {
-  bugName: string | null;
-  bugCaught: string | null;
+  bugName: string; //| //null;
+  bugCaught: string; //| null;
   bug: Bug;
   data: Observable<Bug[]>;
 
-  constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) { }
+  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
+    this.bugName = this.route.snapshot.queryParams.name;
+    this.findBug(this.bugName)
+    console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
+    /** 
     this.route.queryParamMap.subscribe(
       params => {
         console.log(params);
         this.bugName = params.get("name"); 
         this.findBug(this.bugName)
         console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
-      })
+      })*/
   }
 
   /**

@@ -22,7 +22,7 @@ export class BugComponent implements OnInit {
   chosenBug: Bug;
   caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: string | null;
+  persist: string;// | null;
 
   constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) {}
 
