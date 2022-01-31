@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { Spectator, createComponentFactory, SpectatorHttp, createHttpFactory } from '@ngneat/spectator'
+import {  SpectatorHttp, createHttpFactory } from '@ngneat/spectator'
 import { BugService } from './bug.service';
 
 describe('BugService', () => {

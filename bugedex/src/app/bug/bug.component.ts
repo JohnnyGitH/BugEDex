@@ -24,7 +24,7 @@ export class BugComponent implements OnInit {
   data: Observable<Bug[]>;
   persist: string;// | null;
 
-  constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) {}
+  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table

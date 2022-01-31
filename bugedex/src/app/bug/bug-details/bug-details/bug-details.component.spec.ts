@@ -7,7 +7,7 @@ import { BugDetailsComponent } from './bug-details.component';
 import faker from 'faker';
 import { Bug } from '../../shared/models/bug.model';
 import { Month } from '../../shared/models/month.model';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 describe('BugDetailsComponent', () => {
   let spectator: Spectator<BugDetailsComponent>;
@@ -17,20 +17,17 @@ describe('BugDetailsComponent', () => {
 
   const createComponent = createComponentFactory({
       component: BugDetailsComponent,
+      imports: [
+          RouterTestingModule.withRoutes([{ path: 'bug', component: BugDetailsComponent}])
+      ],
       providers: [
-        HttpClient,
-        HttpHandler,
-        RouterTestingModule,
-        BugService,
         {
           provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: { name: "butterfly"}}}
+          useValue: { snapshot: { queryParams: { name: "T"}}}
         }
       ],
-      imports:[
-        RouterTestingModule,
-      ],
-      mocks: [BugService]
+      detectChanges: false,
+      mocks: [ BugService ]
     });
 
     const createFakeMonthModel = (): Month => {
@@ -82,8 +79,7 @@ describe('BugDetailsComponent', () => {
     spectator = createComponent();
     component = spectator.component;
     bugService = spectator.inject(BugService);
-    fakeBugs = createFakeBugArray();
-    bugService.getBugsData.and.returnValue(of(fakeBugs));
+    bugService.state = new BehaviorSubject<any>([])
   });
 
   it('should create', () => {

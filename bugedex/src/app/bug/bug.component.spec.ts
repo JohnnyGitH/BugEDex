@@ -7,7 +7,8 @@ import { BugService } from './shared/bug.service';
 import faker from 'faker';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
-import { of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Component } from '@angular/core';
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
@@ -15,24 +16,22 @@ describe('BugComponent', () => {
   let bugService: SpyObject<BugService>;
   let fakeBugs: Bug[] = [];
 
-
   const createComponent = createComponentFactory({
-    component: BugComponent,
-    providers: [
-      HttpClient,
-      HttpHandler,
-      BugService,
-      Router,
-      {
-        provide: ActivatedRoute,
-        useValue: { snapshot:{ queryParams: { persist: "T"}}}
-      }
-    ],
-    imports:[
-      RouterTestingModule
-    ],
-    mocks: [BugService]
+      component: BugComponent,
+      imports:[
+           RouterTestingModule.withRoutes([{ path: '', component: BugComponent }])
+      ],
+      providers:[
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { queryParams: { name: "butterfly"}}}
+        }
+      ],
+      detectChanges: false,
+      mocks:[ BugService ]
+    
   });
+
   const createFakeMonthModel = (): Month => {
     const counter = faker.datatype.number({ min: 2, max: 6})
     const numArray1: number[] =[];
@@ -66,7 +65,6 @@ describe('BugComponent', () => {
     }
   }
 
-  //Need a bug array for testing
   const createFakeBugArray = (): Bug[] => {
     const counter = faker.datatype.number({ min: 2, max: 6})
     const bugArray: Bug[] = [];
@@ -74,20 +72,20 @@ describe('BugComponent', () => {
     for(let i =0; i> counter; i++){
       bugArray.push(createFakeBugModel());
     }
+    fakeBugs=bugArray;
 
-    return bugArray;
+    return fakeBugs;
   }
 
-  beforeEach (() => 
-  {
+  beforeEach (() => {
     spectator = createComponent();
     component = spectator.component;
     bugService = spectator.inject(BugService);
-    fakeBugs = createFakeBugArray();
-    bugService.getBugsData.and.returnValue(of(fakeBugs));
+    bugService.state = new BehaviorSubject<any>([])
   });
 
   it('should create', () => {
-    expect(spectator.component).toBeTruthy();
+
+    expect(component).toBeTruthy();
   });
 });

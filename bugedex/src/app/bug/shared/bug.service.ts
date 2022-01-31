@@ -12,7 +12,7 @@ import { Bug } from './models/bug.model';
  */
 export class BugService {
   bug: Observable<Bug[]>;
-  state = new BehaviorSubject<any>(null);
+  state:BehaviorSubject<any> =  new BehaviorSubject<any>([]);
 
   constructor(private dataService: BugDataService) { }
 
@@ -23,5 +23,9 @@ export class BugService {
     console.log("Bug Service, preparing for bug component, getBugs()");
     this.state.next(this.dataService.getBugs());    
     console.log("Value - ",this.state.value)        
+  }
+
+  test(num1: number, num2: number): number {
+    return num1 +num2;
   }
 }
