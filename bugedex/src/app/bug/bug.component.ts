@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, find, map, Observable, single } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -43,8 +43,8 @@ export class BugComponent implements OnInit {
   }
 
   /**
-   * Loading the bugs into the localBugCollection 
-   *  and datasource to populate table in the template
+   * Loading the bugs into the table data source 
+   * to populate table in the template
    */
   loadBugs() {
     console.log("loadBugs(): loading Bug Service bugs");

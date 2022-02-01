@@ -32,17 +32,17 @@ export class BugDetailsComponent implements OnInit {
   }
 
   /**
- * Clicking on a bug row should navigate to the details page
- * with the bug name as a param
- * @param bugName name of bug selected
+ * Clicking on the button should navigate you
+ * back to the bugs page with the list of bugs
  */
   backClick(){
     this.router.navigateByUrl("/bugs?state=t");
   }
 
   /**
-   * This method finds the bug being selected for
-   * checkmark, and updates the caught property
+   * This method finds the bug  selected and
+   * assigns it to the bugDetail object
+   * to be displayed for the user.
    * @param bugName name of bug selected
    */
   findBug(bugName: string) {
@@ -52,6 +52,5 @@ export class BugDetailsComponent implements OnInit {
       map(bugs => 
         bugs.find(bug => bug.name === bugName))
     ).subscribe(bugDetail => this.bug = bugDetail)
-    //this.bugService.state.next(updated);
   }
 }

@@ -1,20 +1,18 @@
-import { HttpClient, HttpHandler } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createComponentFactory, Spectator, SpyObject } from '@ngneat/spectator';
 import { BugComponent } from './bug.component';
 import { BugService } from './shared/bug.service';
-import faker from 'faker';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { Component } from '@angular/core';
+import { BehaviorSubject, of } from 'rxjs';
 
-describe('BugComponent', () => {
+fdescribe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
   let component: BugComponent;
   let bugService: SpyObject<BugService>;
   let fakeBugs: Bug[] = [];
+  let foundBug: Bug;
 
   const createComponent = createComponentFactory({
       component: BugComponent,
@@ -29,63 +27,81 @@ describe('BugComponent', () => {
       ],
       detectChanges: false,
       mocks:[ BugService ]
-    
   });
-
-  const createFakeMonthModel = (): Month => {
-    const counter = faker.datatype.number({ min: 2, max: 6})
-    const numArray1: number[] =[];
-    const numArray2: number[] =[];
-
-    for(let i=0; i < counter; i++){
-      numArray1.push(faker.datatype.number());
-      numArray2.push(faker.datatype.number());
-    }
-    return {
-      north: numArray1,
-      south: numArray2
-    }
-  }
-
-  const createFakeBugModel = (): Bug => {
-    const counter = faker.datatype.number({ min: 2, max: 6})
-    const numArray: number[] =[];
-
-    for(let i=0; i < counter; i++){
-      numArray.push(faker.datatype.number());
-    }
-    
-    return {
-      name: faker.random.alphaNumeric(10),
-      location: faker.random.alphaNumeric(10),
-      time: faker.random.alphaNumeric(10),
-      price: faker.datatype.number({ min: 2, max: 6}),
-      month: createFakeMonthModel(),
-      caught: false
-    }
-  }
-
-  const createFakeBugArray = (): Bug[] => {
-    const counter = faker.datatype.number({ min: 2, max: 6})
-    const bugArray: Bug[] = [];
-
-    for(let i =0; i> counter; i++){
-      bugArray.push(createFakeBugModel());
-    }
-    fakeBugs=bugArray;
-
-    return fakeBugs;
-  }
 
   beforeEach (() => {
     spectator = createComponent();
     component = spectator.component;
     bugService = spectator.inject(BugService);
-    bugService.state = new BehaviorSubject<any>([])
+    bugService.state = new BehaviorSubject<any>([]);
+
   });
 
-  it('should create', () => {
-
+  it('should be createt', () => {
     expect(component).toBeTruthy();
   });
+
+  describe("loadBugs()", () => {
+    let bugArray = [];
+
+    for(let i=0;i<10;i++){
+      bugArray.push({
+        name:"buterfly"+i,
+        location:"location"+i,
+        time:"time"+i,
+        price: 10+i,
+        month:{
+          north:[],
+          south:[]
+        } as Month,
+        caught:false
+      } as Bug);
+    }
+  
+    it('should load bugs into the dataSource', () =>{
+      bugService.state = new BehaviorSubject<any>(of(bugArray));
+      spectator.component.loadBugs();
+      expect(spectator.component.dataSource).toEqual(bugArray)
+    });
+    })
+    // Get bug array, use a name, check its caught status
+    // then run checkBugCaught(), check if the bugname is updated.
+    describe("checkBugCaught()", ()=>{
+      let bugArray = [];
+      //Add a single Bug to the array
+      for(let i=0;i<1;i++){
+        bugArray.push({
+          name:"butterfly"+i,
+          location:"location"+i,
+          time:"time"+i,
+          price: 10+i,
+          month:{
+            north:[],
+            south:[]
+          } as Month,
+          caught:false
+        } as Bug);
+      }
+
+      it("should find the bug being selected and update the caught property", () => {
+        let bugName = "butterfly0";
+        console.log(bugArray);
+        expect(bugArray).toHaveData;
+        foundBug = bugArray[0];
+        console.log(foundBug);
+        console.log(foundBug.name);
+        console.log(foundBug.caught);
+
+        bugService.state = new BehaviorSubject<any>(of(bugArray));
+
+        expect(foundBug.name).toHaveText(bugName);
+        expect(foundBug.caught).toBeFalsy;
+
+        spectator.component.checkBugCaught(bugName);
+        bugArray = bugService.state.getValue();
+        foundBug = bugArray[0]
+
+        expect(foundBug.caught).toBeTruthy;
+      });
+    })
 });

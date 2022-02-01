@@ -24,8 +24,4 @@ export class BugService {
     this.state.next(this.dataService.getBugs());    
     console.log("Value - ",this.state.value)        
   }
-
-  test(num1: number, num2: number): number {
-    return num1 +num2;
-  }
 }
