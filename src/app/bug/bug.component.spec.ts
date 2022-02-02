@@ -89,35 +89,33 @@ describe('BugComponent', () => {
       bArray.push(bug);
 
       it("should find the bug being selected and update the caught property", () => {
+        // Setup
         let bugName = bug.name;
         let foundBug: Bug;
         foundBug = { caught: false, name: "", location: "", time: "", price: 1, month: {north: [],south: [],},};
         let inputArrayBug: Bug;
         let expectedArrayBug: Bug;
+
         // Make sure Array has bug
         expect(bArray).toHaveData;
 
+        // Assignment
         inputArrayBug = bArray[0];
-
-        //Assign caught / name
         foundBug.caught = inputArrayBug.caught;
         foundBug.name = inputArrayBug.name;
-
-        console.log(foundBug);
-
         bugService.state = new BehaviorSubject<any>(of(bArray));
 
+        // Make sure foundbug name is correct and caught is false
         expect(foundBug.name).toHaveText(bugName);
         expect(foundBug.caught).toBeFalsy;
   
+        // Call checkBugCaught()
         spectator.component.checkBugCaught(bugName);
         afterArray = bugService.state.getValue(); // failing here.
-
-        console.log(afterArray);
-
         expectedArrayBug = afterArray[0];
         foundBug.caught = expectedArrayBug.caught
 
+        // Final expect, ensureing the method changes caught property
         expect(foundBug.caught).toBeTruthy;
       });
     })
