@@ -6,7 +6,6 @@ import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
 import { BehaviorSubject, of } from 'rxjs';
-import faker from 'faker';
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
@@ -81,7 +80,6 @@ describe('BugComponent', () => {
     // then run checkBugCaught(), check if the bugname is updated.
     describe("checkBugCaught()", ()=>{
       let bArray: Bug[] = [];
-      //let afterArray: Bug[] = [];
       let bug: Bug;
       bug = createFakeBugModel();
       bArray.push(bug);
@@ -108,7 +106,7 @@ describe('BugComponent', () => {
   
         // Call checkBugCaught()
         spectator.component.checkBugCaught(bugName);
-        let afterArray = bugService.state.getValue(); // failing here.
+        let afterArray = bugService.state.getValue();
         afterArray.subscribe( res => {
           console.log(res)
           expect(res[0].caught).toBeTruthy;

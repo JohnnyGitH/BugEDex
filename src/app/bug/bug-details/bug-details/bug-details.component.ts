@@ -10,8 +10,8 @@ import { Bug } from '../../shared/models/bug.model';
   styleUrls: ['./bug-details.component.css']
 })
 export class BugDetailsComponent implements OnInit {
-  bugName: string; //| //null;
-  bugCaught: string; //| null;
+  bugName: string;
+  bugCaught: string;
   bug: Bug;
   data: Observable<Bug[]>;
 
@@ -24,9 +24,9 @@ export class BugDetailsComponent implements OnInit {
   }
 
   /**
- * Clicking on the button should navigate you
- * back to the bugs page with the list of bugs
- */
+  * Clicking on the button should navigate you
+  * back to the bugs page with the list of bugs
+  */
   backClick(){
     this.router.navigateByUrl("/bugs?state=t");
   }
