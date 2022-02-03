@@ -33,7 +33,7 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.route.queryParamMap.subscribe( params => { this.persist = params.get("state")})
-    if(this.persist != "t"){
+    if(this.persist != "t"){ // Check if BugService state is empty.
       console.log("persist is = ", this.persist)
       this.bugService.getBugsData();// need to only do this the first time
 
@@ -80,6 +80,6 @@ export class BugComponent implements OnInit {
       })
     )
     this.bugService.state.next(updated);
-    this.loadBugs();
+    
   }
 }

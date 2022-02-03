@@ -12,8 +12,6 @@ describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
   let component: BugComponent;
   let bugService: SpyObject<BugService>;
-  let fakeBugs: Bug[] = [];
-  let foundBug: Bug;
 
   const createComponent = createComponentFactory({
       component: BugComponent,
@@ -81,9 +79,9 @@ describe('BugComponent', () => {
     })
     // Get bug array, use a name, check its caught status
     // then run checkBugCaught(), check if the bugname is updated.
-    fdescribe("checkBugCaught()", ()=>{
+    describe("checkBugCaught()", ()=>{
       let bArray: Bug[] = [];
-      let afterArray: Bug[] = [];
+      //let afterArray: Bug[] = [];
       let bug: Bug;
       bug = createFakeBugModel();
       bArray.push(bug);
@@ -94,7 +92,6 @@ describe('BugComponent', () => {
         let foundBug: Bug;
         foundBug = { caught: false, name: "", location: "", time: "", price: 1, month: {north: [],south: [],},};
         let inputArrayBug: Bug;
-        let expectedArrayBug: Bug;
 
         // Make sure Array has bug
         expect(bArray).toHaveData;
@@ -106,17 +103,16 @@ describe('BugComponent', () => {
         bugService.state = new BehaviorSubject<any>(of(bArray));
 
         // Make sure foundbug name is correct and caught is false
-        expect(foundBug.name).toHaveText(bugName);
+        expect(foundBug.name).toEqual(bugName);
         expect(foundBug.caught).toBeFalsy;
   
         // Call checkBugCaught()
         spectator.component.checkBugCaught(bugName);
-        afterArray = bugService.state.getValue(); // failing here.
-        expectedArrayBug = afterArray[0];
-        foundBug.caught = expectedArrayBug.caught
-
-        // Final expect, ensureing the method changes caught property
-        expect(foundBug.caught).toBeTruthy;
+        let afterArray = bugService.state.getValue(); // failing here.
+        afterArray.subscribe( res => {
+          console.log(res)
+          expect(res[0].caught).toBeTruthy;
+        })
       });
     })
 });

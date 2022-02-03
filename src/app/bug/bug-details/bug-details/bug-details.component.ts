@@ -21,14 +21,6 @@ export class BugDetailsComponent implements OnInit {
     this.bugName = this.route.snapshot.queryParams.name;
     this.findBug(this.bugName)
     console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
-    /** 
-    this.route.queryParamMap.subscribe(
-      params => {
-        console.log(params);
-        this.bugName = params.get("name"); 
-        this.findBug(this.bugName)
-        console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
-      })*/
   }
 
   /**
