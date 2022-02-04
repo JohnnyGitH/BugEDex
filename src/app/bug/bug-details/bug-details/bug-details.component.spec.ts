@@ -3,10 +3,11 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { createComponentFactory, Spectator, SpyObject } from '@ngneat/spectator';
 import { BugService } from '../../shared/bug.service';
 import { BugDetailsComponent } from './bug-details.component';
-import faker from 'faker';
+import * as faker from 'faker';
 import { Bug } from '../../shared/models/bug.model';
 import { Month } from '../../shared/models/month.model';
 import { BehaviorSubject, of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('BugDetailsComponent', () => {
   let spectator: Spectator<BugDetailsComponent>;
@@ -33,7 +34,7 @@ describe('BugDetailsComponent', () => {
   // Creating a fake bug model
   const createFakeBugModel = (): Bug => {
     return {
-      name: faker.random.alphanumeric(10),// need faker to work, its not working atm.
+      name: faker.random.alphaNumeric(10),
       location: "location",
       time: "time",
       price: 1,
@@ -66,13 +67,11 @@ describe('BugDetailsComponent', () => {
   it('should create', () => {
     expect(spectator.component).toBeTruthy();
   });  
-    // Get bug array, use a name
-    // then run findBug()
     fdescribe("findBug()", ()=>{
       let data: Bug[] = [];
       data = createFakeBugArray();
 
-      it("should find the bug being selected", () => {
+      it("should find the bug being selected and display in the template", () => {
         // Setup
         let chosenBug: Bug;
         let bugName: string;
@@ -86,15 +85,33 @@ describe('BugDetailsComponent', () => {
         // Select one bug to be selected and found by name
         bugName = bugArray[0].name;
         chosenBug = bugArray.find( f => f.name == bugName);
-        console.log("Bug name is: "+bugName+" and chosen bug is: "+ chosenBug);
+        console.log("Bug name is: "+bugName+" and chosen bug is: "+ chosenBug.name);
   
         // Call findBug()
         spectator.component.findBug(bugName);
 
+        // find the bug being selected
         expect(spectator.component.bug.name).toEqual(bugName);
-      });
 
-      /*it("should display the retrieved bug", () => {
-      })*/
+        // UI label element
+        const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]'));
+
+        // label
+        console.log("NameLabel3 Querying name label: ", nameLabel.name);
+
+        // p
+        console.log("NameLabel3 Query parent name: ", nameLabel.parent.name);
+
+        //<label _ngcontent-a-c17="" data-testid="name-label" for="name"></label>
+        console.log("NameLabel3 Query actual element inner text: ", nameLabel.nativeElement.innerText);
+        console.log("NameLabel3 Query actual element inner html: ", nameLabel.nativeElement.innerHTML);
+        console.log("NameLabel3 Query actual element text content: ", nameLabel.nativeElement.textContents);
+        console.log("NameLabel3 Query actual element outer text: ", nameLabel.nativeElement.outerText);
+        console.log("NameLabel3 Query actual element label: ", nameLabel.nativeElement.label);
+        console.log("NameLabel3 Query actual element text: ", nameLabel.nativeElement.text);
+        console.log("NameLabel3 Query actual element: ", nameLabel.nativeElement);
+
+        expect(nameLabel.nativeElement).toBeTruthy;
+      });
     })
 });
