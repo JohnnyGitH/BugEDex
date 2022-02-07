@@ -17,6 +17,9 @@ export class BugDetailsComponent implements OnInit {
 
   constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) { }
 
+  /**
+   * Gets bugName from query param
+   */
   ngOnInit(): void {
     this.bugName = this.route.snapshot.queryParams.name;
     this.findBug(this.bugName)
@@ -24,7 +27,7 @@ export class BugDetailsComponent implements OnInit {
   }
 
   /**
-  * Clicking on the button should navigate you
+  * Clicking on the button navigates you
   * back to the bugs page with the list of bugs
   */
   backClick(){

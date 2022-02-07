@@ -67,7 +67,7 @@ describe('BugDetailsComponent', () => {
   it('should create', () => {
     expect(spectator.component).toBeTruthy();
   });  
-    fdescribe("findBug()", ()=>{
+    describe("findBug()", ()=>{
       let data: Bug[] = [];
       data = createFakeBugArray();
 
@@ -80,7 +80,7 @@ describe('BugDetailsComponent', () => {
         expect(data).toHaveData;
 
         // Add bug array to state
-        bugService.state = new BehaviorSubject<any>(of(bugArray));
+        bugService.state = new BehaviorSubject<any>(of(bugArray)); //new BehaviourSubject<any>(bugArray)
 
         // Select one bug to be selected and found by name
         bugName = bugArray[0].name;
@@ -90,8 +90,18 @@ describe('BugDetailsComponent', () => {
         // Call findBug()
         spectator.component.findBug(bugName);
 
+        // test properties
+        console.log(spectator.component.bug.name);
+        console.log(spectator.component.bug.caught);
+
+        // DETECT CHANGES ---- here
+        //spectator.detectChanges(); // dies here
+
+        console.log(spectator.component.bug.name);
+        console.log(spectator.component.bug.caught);
+
         // find the bug being selected
-        expect(spectator.component.bug.name).toEqual(bugName);
+        expect(spectator.component.bug.name).toEqual(bugName); // bug?.name
 
         // UI label element
         const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]'));

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, single } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
 
@@ -12,7 +12,7 @@ import { Bug } from './models/bug.model';
  */
 export class BugService {
   bug: Observable<Bug[]>;
-  state:BehaviorSubject<any> =  new BehaviorSubject<any>([]);
+  state:BehaviorSubject<any> =  new BehaviorSubject<any>([]); // update type Bug[]
 
   constructor(private dataService: BugDataService) { }
 
@@ -21,7 +21,13 @@ export class BugService {
    */
   getBugsData() {
     console.log("Bug Service, preparing for bug component, getBugs()");
-    this.state.next(this.dataService.getBugs());    
+    this.state.next(this.dataService.getBugs()); 
+    /*
+    this.dataService.getBugs().pipe(first()subscribe(
+      bugs => this.state.next(bugs)
+      console.log()
+    )
+    */
     console.log("Value - ",this.state.value)        
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, throwError, timeout } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
 import { Bug } from './models/bug.model';
 
-// I would make these a config of some sort
+// I will make these a config of some sort
 const endpoint = "/data/v1/bug.json";
 const baseUrl = "https://www.xhsun.me/acnh-api/";
 
@@ -22,7 +22,7 @@ export class BugDataService {
    * 
    * @returns Observable of BugDTO
    */
-  getBugs(): Observable<Bug[]> {
+  getBugs(): Observable<Bug[]> { // Implement a timeout
     console.log("GET Request for Bugs");
     return this.http
             .get<Bug[]>(baseUrl.concat(endpoint))
