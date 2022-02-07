@@ -31,7 +31,7 @@ export class BugDetailsComponent implements OnInit {
   * back to the bugs page with the list of bugs
   */
   backClick(){
-    this.router.navigateByUrl("/bugs?state=t");
+    this.router.navigateByUrl("/bugs");
   }
 
   /**
