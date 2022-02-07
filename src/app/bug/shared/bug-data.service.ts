@@ -20,7 +20,7 @@ export class BugDataService {
    * Need to filter the time to all day
    * Need to default the caught property to false
    * 
-   * @returns Observable of BugDTO
+   * @returns Observable of Bug array
    */
   getBugs(): Observable<Bug[]> { // Implement a timeout
     console.log("GET Request for Bugs");

@@ -22,7 +22,7 @@ export class BugComponent implements OnInit {
   chosenBug: Bug;
   caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: Bug[] = []
+  persist: Observable<Bug[]>;
 
   constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
 
@@ -33,12 +33,10 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.persist = this.bugService.state.getValue()
-    if(this.persist.length === 0){
-      console.log("persist length is = ", this.persist.length)
+    if(!this.persist){
       this.bugService.getBugsData();// need to only do this the first time
 
     }
-    console.log("Outside persist length is = ", this.persist.length)
     console.log("ngOnInit.loadBugs()")
     this.loadBugs();
   }
