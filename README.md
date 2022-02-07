@@ -63,3 +63,14 @@ Example of the response object from the API
         }
     }
 ```
+
+
+
+TODO
+
+- images for the bug details page - pexels
+- formgroups for the details page
+- GitHub Readme decoration
+- Make a MaterialCommonModule
+- Conditional or ? for Bug Details
+- Implement a timeout in bug data service

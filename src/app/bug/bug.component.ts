@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, find, map, Observable, single } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -22,9 +22,9 @@ export class BugComponent implements OnInit {
   chosenBug: Bug;
   caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: string | null;
+  persist: string;
 
-  constructor(private bugService: BugService,private route: ActivatedRoute, private router: Router) {}
+  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table
@@ -33,7 +33,8 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.route.queryParamMap.subscribe( params => { this.persist = params.get("state")})
-    if(this.persist != "t"){
+    if(this.persist != "t"){ // Check if BugService state is empty.
+    //if(this.bugService.state === undefined){
       console.log("persist is = ", this.persist)
       this.bugService.getBugsData();// need to only do this the first time
 
@@ -43,8 +44,8 @@ export class BugComponent implements OnInit {
   }
 
   /**
-   * Loading the bugs into the localBugCollection 
-   *  and datasource to populate table in the template
+   * Loading the bugs into the table data source 
+   * to populate table in the template
    */
   loadBugs() {
     console.log("loadBugs(): loading Bug Service bugs");
@@ -71,7 +72,7 @@ export class BugComponent implements OnInit {
    */
   checkBugCaught(bugName: string) {
     console.log("bug.checkBugCaught() => "+bugName);
-    this.data = this.bugService.state.getValue();
+    this.data = this.bugService.state.getValue();// Here removed .getValue()
     let updated = this.data.pipe(
       map(bugs => {
         const index = bugs.findIndex( bug => bug.name == bugName);
@@ -80,6 +81,6 @@ export class BugComponent implements OnInit {
       })
     )
     this.bugService.state.next(updated);
-    this.loadBugs();
+    
   }
 }
