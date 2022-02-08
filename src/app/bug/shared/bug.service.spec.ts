@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import {  SpectatorHttp, createHttpFactory } from '@ngneat/spectator'
 import { BugDataService } from './bug-data.service';
 import { BugService } from './bug.service';
-import * as faker from 'faker';
+import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from './models/bug.model';
 
