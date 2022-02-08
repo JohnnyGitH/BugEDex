@@ -6,7 +6,7 @@ import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
 import { BehaviorSubject, of } from 'rxjs';
-import * as faker from 'faker';
+import * as faker from "faker";
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
