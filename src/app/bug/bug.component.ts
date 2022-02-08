@@ -22,7 +22,7 @@ export class BugComponent implements OnInit {
   chosenBug: Bug;
   caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: string;
+  persist: Observable<Bug[]>;
 
   constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
 
@@ -32,10 +32,8 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe( params => { this.persist = params.get("state")})
-    if(this.persist != "t"){ // Check if BugService state is empty.
-    //if(this.bugService.state === undefined){
-      console.log("persist is = ", this.persist)
+    this.persist = this.bugService.state.getValue()
+    if(!this.persist){
       this.bugService.getBugsData();// need to only do this the first time
 
     }
@@ -72,7 +70,7 @@ export class BugComponent implements OnInit {
    */
   checkBugCaught(bugName: string) {
     console.log("bug.checkBugCaught() => "+bugName);
-    this.data = this.bugService.state.getValue();// Here removed .getValue()
+    this.data = this.bugService.state.getValue();
     let updated = this.data.pipe(
       map(bugs => {
         const index = bugs.findIndex( bug => bug.name == bugName);
@@ -81,6 +79,5 @@ export class BugComponent implements OnInit {
       })
     )
     this.bugService.state.next(updated);
-    
   }
 }

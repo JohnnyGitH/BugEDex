@@ -1,11 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createComponentFactory, Spectator, SpyObject } from '@ngneat/spectator';
+import { createComponentFactory, Spectator, SpectatorRouting, SpyObject } from '@ngneat/spectator';
 import { BugComponent } from './bug.component';
 import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
 import { BehaviorSubject, of } from 'rxjs';
+import * as faker from "faker";
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
@@ -113,4 +114,11 @@ describe('BugComponent', () => {
         })
       });
     })
+    /** 
+    describe("bugClick()", () => {
+
+      it("should navigate to the /bug page with the name of selected bug", () => {
+
+      })
+    })*/
 });

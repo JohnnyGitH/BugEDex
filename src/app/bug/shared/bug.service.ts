@@ -12,22 +12,16 @@ import { Bug } from './models/bug.model';
  */
 export class BugService {
   bug: Observable<Bug[]>;
-  state:BehaviorSubject<any> =  new BehaviorSubject<any>([]); // update type Bug[]
+  state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); // update type Bug[]
 
   constructor(private dataService: BugDataService) { }
 
   /**
-   * Get bugs from data service. Assign to local variable
+   * Get bugs from data service. Assign to behavior subject
    */
   getBugsData() {
     console.log("Bug Service, preparing for bug component, getBugs()");
     this.state.next(this.dataService.getBugs()); 
-    /*
-    this.dataService.getBugs().pipe(first()subscribe(
-      bugs => this.state.next(bugs)
-      console.log()
-    )
-    */
     console.log("Value - ",this.state.value)        
   }
 }
