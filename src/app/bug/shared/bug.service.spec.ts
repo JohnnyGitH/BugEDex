@@ -60,7 +60,7 @@ describe('BugService', () => {
 
   describe('getBugsData', () => {
     
-    it('should get the bug data from the data service', () => {
+    it("should get the bug data from the data service", () => {
       mockDataService.getBugs();
       spectator.service.getBugsData()
 
