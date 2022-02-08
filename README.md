@@ -1,5 +1,7 @@
 # Bugedex
 
+![Animal Crossing Title image](src\assets\images\AnimalCrossingBanner.jpg)
+
 ## About
 
 Once you start up the application you will find yourself at http://localhost:4200/bugs.
