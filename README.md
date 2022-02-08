@@ -1,10 +1,6 @@
 # Bugedex
 
-![Animal Crossing Title image](assets/images/bugReadmeimage.jpg)
-
 ![Animal Crossing Title image](src/assets/images/bugReadmeimage.jpg)
-
-![Animal Crossing Title image](/GitHub/BugEDex/src/assets/images/bugReadmeimage.jpg)
 
 ## About
 
