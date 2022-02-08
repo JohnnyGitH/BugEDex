@@ -1,5 +1,7 @@
 # Bugedex
 
+![Animal Crossing Title image](src/assets/images/bugReadmeimage.jpg)
+
 ## About
 
 Once you start up the application you will find yourself at http://localhost:4200/bugs.
@@ -64,6 +66,39 @@ Example of the response object from the API
 ## Project Information
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.2.
+
+
+``` powershell
+
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+    
+
+Angular CLI: 13.1.2
+Node: 16.13.1
+Package Manager: npm 8.3.0
+OS: win32 x64
+
+Angular: 13.1.1
+... animations, cdk, common, compiler, compiler-cli, core, forms
+... material, platform-browser, platform-browser-dynamic, router
+
+Package                         Version
+---------------------------------------------------------
+@angular-devkit/architect       0.1301.2
+@angular-devkit/build-angular   13.1.2
+@angular-devkit/core            13.1.2
+@angular-devkit/schematics      13.1.2
+@angular/cli                    13.1.2
+@schematics/angular             13.2.0
+rxjs                            7.4.0
+typescript                      4.5.4
+
+```
 
 ## Development server
 
