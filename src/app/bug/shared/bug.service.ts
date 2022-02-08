@@ -17,7 +17,7 @@ export class BugService {
   constructor(private dataService: BugDataService) { }
 
   /**
-   * Get bugs from data service. Assign to local variable
+   * Get bugs from data service. Assign to behavior subject
    */
   getBugsData() {
     console.log("Bug Service, preparing for bug component, getBugs()");
