@@ -26,7 +26,7 @@ describe('BugDataService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('getBugs()', () => {
+  describe("getBugs()", () => {
     
     it("should get the bug data from the data serviceAPI", () => {
       spectator.service.getBugs().subscribe();
