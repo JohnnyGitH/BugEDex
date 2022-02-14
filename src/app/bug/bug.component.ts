@@ -19,7 +19,7 @@ export class BugComponent implements OnInit {
 
   // data for the component template table
   dataSource: Bug[] = [];
-  chosenBug: Bug;
+  chosenBug: Bug; // remove unused stuff
   caughtBug: Bug;
   data: Observable<Bug[]>;
   persist: Observable<Bug[]>;
@@ -32,7 +32,7 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    this.persist = this.bugService.state.getValue()
+    this.persist = this.bugService.state.getValue() // bug service method
     if(!this.persist){
       this.bugService.getBugsData();// need to only do this the first time
 
@@ -60,7 +60,7 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   bugClick(bugName: string){
-    this.router.navigateByUrl("/bug?name="+bugName);
+    this.router.navigateByUrl("/bug?name="+bugName);// try something different. Part of the template.
   }
 
   /**
@@ -81,3 +81,5 @@ export class BugComponent implements OnInit {
     this.bugService.state.next(updated);
   }
 }
+
+// cheBugCaught - MOVE TO SERVICE

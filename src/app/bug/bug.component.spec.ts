@@ -1,17 +1,17 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { createComponentFactory, Spectator, SpectatorRouting, SpyObject } from '@ngneat/spectator';
+import { createComponentFactory, Spectator, SpyObject } from '@ngneat/spectator';
 import { BugComponent } from './bug.component';
 import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
 import { BehaviorSubject, of } from 'rxjs';
-import * as faker from "faker";
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
   let component: BugComponent;
   let bugService: SpyObject<BugService>;
+  let routerMock: SpyObject<Router>;
 
   const createComponent = createComponentFactory({
       component: BugComponent,
@@ -20,12 +20,15 @@ describe('BugComponent', () => {
       ],
       providers:[
         {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: { name: "butterfly"}}}
+          provide: ActivatedRoute, // better way
+          useValue: { snapshot: { queryParams: { name: "butterfly"}}} // spectator
         }
       ],
       detectChanges: false,
-      mocks:[ BugService ]
+      mocks:[ 
+        BugService,
+        Router, 
+      ]
   });
 
   const createFakeBugModel = (): Bug => {
@@ -47,17 +50,21 @@ describe('BugComponent', () => {
     component = spectator.component;
     bugService = spectator.inject(BugService);
     bugService.state = new BehaviorSubject<any>([]);
+    routerMock = spectator.inject(Router);
 
   });
 
-  it('should be createt', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy();
   });
 
+  /**
+   * Testing the loadBugs() method
+   */
   describe("loadBugs()", () => {
     let bugArray = [];
 
-    for(let i=0;i<10;i++){
+    for(let i=0;i<10;i++){ // reminder to use faker
       bugArray.push({
         name:"butterfly"+i,
         location:"location"+i,
@@ -77,8 +84,9 @@ describe('BugComponent', () => {
       expect(spectator.component.dataSource).toEqual(bugArray)
     });
     })
-    // Get bug array, use a name, check its caught status
-    // then run checkBugCaught(), check if the bugname is updated.
+    /**
+     * Testing the checkBugCaught() method
+     */
     describe("checkBugCaught()", ()=>{
       let bArray: Bug[] = [];
       let bug: Bug;
@@ -114,11 +122,17 @@ describe('BugComponent', () => {
         })
       });
     })
-    /** 
+    /**
+     * Testing the bugClick() method
+     */
     describe("bugClick()", () => {
 
       it("should navigate to the /bug page with the name of selected bug", () => {
+          let bugName = 'butterfly'
+          spectator.component.bugClick(bugName);
 
+          expect(routerMock.navigateByUrl).toHaveBeenCalledTimes(1);
+          expect(routerMock.navigateByUrl).toHaveBeenCalledWith("/bug?name="+bugName);
       })
-    })*/
+    })
 });
