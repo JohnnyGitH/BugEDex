@@ -20,8 +20,8 @@ describe('BugComponent', () => {
       ],
       providers:[
         {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: { name: "butterfly"}}}
+          provide: ActivatedRoute, // better way
+          useValue: { snapshot: { queryParams: { name: "butterfly"}}} // spectator
         }
       ],
       detectChanges: false,
