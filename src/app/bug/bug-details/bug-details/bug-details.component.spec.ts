@@ -19,13 +19,9 @@ describe('BugDetailsComponent', () => {
   const createComponent = createComponentFactory({
       component: BugDetailsComponent,
       imports: [
-          RouterTestingModule.withRoutes([{ path: 'bug', component: BugDetailsComponent}])
+          RouterTestingModule.withRoutes([{ path: 'bug', component: BugDetailsComponent}]) // spectator
       ],
       providers: [
-        {
-          provide: ActivatedRoute,
-          useValue: { snapshot: { queryParams: { name: "T"}}}
-        }
       ],
       detectChanges: false,
       mocks: [ BugService ]
@@ -103,8 +99,8 @@ describe('BugDetailsComponent', () => {
         // find the bug being selected
         expect(spectator.component.bug.name).toEqual(bugName); // bug?.name
 
-        // UI label element
-        const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]'));
+        // UI label element - LOOK INTO IT
+        const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]')); // access native elements to access data inside the label
 
         // label
         console.log("NameLabel3 Querying name label: ", nameLabel.name);
@@ -125,3 +121,7 @@ describe('BugDetailsComponent', () => {
       });
     })
 });
+
+
+// I will look at another way to query elements
+// 

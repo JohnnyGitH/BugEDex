@@ -31,7 +31,7 @@ export class BugDetailsComponent implements OnInit {
   * back to the bugs page with the list of bugs
   */
   backClick(){
-    this.router.navigateByUrl("/bugs");
+    this.router.navigateByUrl("/bugs"); // Use something new! Browser saves state. If page is new page no backsies
   }
 
   /**
@@ -41,11 +41,13 @@ export class BugDetailsComponent implements OnInit {
    * @param bugName name of bug selected
    */
   findBug(bugName: string) {
-    console.log("findBug() => "+bugName);
-    this.data = this.bugService.state.getValue();
+    console.log("findBug() => "+bugName); // ngxlogger
+    this.data = this.bugService.state.getValue(); // handle how I do state
     this.data.pipe(
       map(bugs => 
         bugs.find(bug => bug.name === bugName))
     ).subscribe(bugDetail => this.bug = bugDetail)
   }
 }
+
+// findBug() - bug service. Like discussed.

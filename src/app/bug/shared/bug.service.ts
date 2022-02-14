@@ -11,8 +11,10 @@ import { Bug } from './models/bug.model';
  * This service uses the data service to get the bug data
  */
 export class BugService {
-  bug: Observable<Bug[]>;
-  state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); // update type Bug[]
+  bug: Observable<Bug[]>; // REMOVE ALL UNUSED THINGS PLEASE
+  state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); 
+  
+  // Look into standard practice behaviour subject
 
   constructor(private dataService: BugDataService) { }
 
@@ -25,3 +27,16 @@ export class BugService {
     console.log("Value - ",this.state.value)        
   }
 }
+
+
+// Not sure if filter does what I think.
+// Look into second filter
+
+// Should be using a DTO model, so all API properties
+// Mapping it into the domain model, setting caught property.
+
+// Wants filtering in service.
+
+// state property should not be exposed. Get values, through values. Like angular demo.
+// private
+// 
