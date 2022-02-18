@@ -100,6 +100,13 @@ typescript                      4.5.4
 
 ```
 
+Requested Work:
+- Add DTO model
+- Bug Service - Needs to be handling the filtering
+- Create methods in service so state isn't exposed directly to the component
+- check if filter in Bug service does what i think it does
+- 
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import {  Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 
@@ -19,10 +19,7 @@ export class BugComponent implements OnInit {
 
   // data for the component template table
   dataSource: Bug[] = [];
-  chosenBug: Bug; // remove unused stuff
-  caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: Observable<Bug[]>;
 
   constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
 
@@ -32,10 +29,8 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    this.persist = this.bugService.state.getValue() // bug service method
-    if(!this.persist){
-      this.bugService.getBugsData();// need to only do this the first time
-
+    if(!this.bugService.checkBugsLoaded()){
+      this.bugService.getBugsData();
     }
     console.log("ngOnInit.loadBugs()")
     this.loadBugs();
@@ -69,17 +64,6 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   checkBugCaught(bugName: string) {
-    console.log("bug.checkBugCaught() => "+bugName);
-    this.data = this.bugService.state.getValue();
-    let updated = this.data.pipe(
-      map(bugs => {
-        const index = bugs.findIndex( bug => bug.name == bugName);
-        bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
-        return bugs;
-      })
-    )
-    this.bugService.state.next(updated);
+    this.bugService.checkBugCaught(bugName);
   }
 }
-
-// cheBugCaught - MOVE TO SERVICE
