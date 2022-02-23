@@ -9,6 +9,7 @@ import { MatCommonModule } from '@angular/material/core';
 import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.component';
 import { MatCardModule } from '@angular/material/card'
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     HttpClientModule,
     MatCommonModule,
     MatCardModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    LoggerModule.forRoot({
+      serverLoggingUrl: '/api/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.ERROR
+    }),
   ],
   providers: [HttpClient],
   bootstrap: [AppComponent]

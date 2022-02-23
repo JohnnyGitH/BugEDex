@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BugService } from '../../shared/bug.service';
 import { Bug } from '../../shared/models/bug.model';
+import { NGXLogger} from "ngx-logger";
 
 @Component({
   selector: 'app-bug-details',
@@ -15,7 +16,7 @@ export class BugDetailsComponent implements OnInit {
   bug: Bug;
   data: Observable<Bug[]>;
 
-  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router,private logger: NGXLogger) { }
 
   /**
    * Gets bugName from query param
@@ -23,7 +24,7 @@ export class BugDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.bugName = this.route.snapshot.queryParams.name;
     this.findBug(this.bugName)
-    console.log("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught)
+    this.logger.debug("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught);
   }
 
   /**
@@ -35,19 +36,11 @@ export class BugDetailsComponent implements OnInit {
   }
 
   /**
-   * This method finds the bug  selected and
-   * assigns it to the bugDetail object
-   * to be displayed for the user.
+   * This method calls bug service with the
+   * bugs name
    * @param bugName name of bug selected
    */
   findBug(bugName: string) {
-    console.log("findBug() => "+bugName); // ngxlogger
-    this.data = this.bugService.state.getValue(); // handle how I do state
-    this.data.pipe(
-      map(bugs => 
-        bugs.find(bug => bug.name === bugName))
-    ).subscribe(bugDetail => this.bug = bugDetail)
+    this.bug = this.bugService.findBugService(bugName);
   }
 }
-
-// findBug() - bug service. Like discussed.

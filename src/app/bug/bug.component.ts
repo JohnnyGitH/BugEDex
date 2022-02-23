@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {  Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
+import { NGXLogger} from "ngx-logger";
 
 /**
  * This component is responsible for displaying the bug
@@ -21,7 +22,7 @@ export class BugComponent implements OnInit {
   dataSource: Bug[] = [];
   data: Observable<Bug[]>;
 
-  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private bugService: BugService, private logger: NGXLogger, private router: Router) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table
@@ -32,7 +33,7 @@ export class BugComponent implements OnInit {
     if(!this.bugService.checkBugsLoaded()){
       this.bugService.getBugsData();
     }
-    console.log("ngOnInit.loadBugs()")
+    this.logger.debug("ngOnInit.loadBugs()")
     this.loadBugs();
   }
 
@@ -41,10 +42,9 @@ export class BugComponent implements OnInit {
    * to populate table in the template
    */
   loadBugs() {
-    console.log("loadBugs(): loading Bug Service bugs");
+    this.logger.debug("loadBugs(): loading Bug Service bugs")
     this.data = this.bugService.state.getValue();
     this.data.subscribe( data => {
-      console.log(data);
       this.dataSource = data;
     })
     }
