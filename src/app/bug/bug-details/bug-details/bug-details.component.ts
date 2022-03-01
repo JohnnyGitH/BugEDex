@@ -20,6 +20,7 @@ export class BugDetailsComponent implements OnInit {
 
   /**
    * Gets bugName from query param
+   * finds it, and displays it
    */
   ngOnInit(): void {
     this.bugName = this.route.snapshot.queryParams.name;
@@ -33,7 +34,6 @@ export class BugDetailsComponent implements OnInit {
   * back to the bugs page with the list of bugs
   */
   backClick(){
-    //this.router.navigateByUrl("/bugs"); // Use something new! Browser saves state. If page is new page no backsies
     this.router.navigate(['/bugs']);
   }
 }

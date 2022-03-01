@@ -14,10 +14,7 @@ import { NGXLogger} from "ngx-logger";
 export class BugService {
   state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); 
   data: Observable<Bug[]>;
-  default: boolean = false; // Doesn't work in setting the value
   bug: Observable<Bug>;
-  
-  // Look into standard practice behaviour subject
 
   constructor(private dataService: BugDataService,private logger: NGXLogger) { }
 
@@ -30,9 +27,8 @@ export class BugService {
     this.logger.debug("Bug Service, preparing for bug component, getBugs()");
     this.state.next(this.dataService.getBugs()
                 .pipe(
-                  map( b =>
-                    b.filter( bug => bug.time == "All day",
-                    b.map( (dto) =>
+                  map( b => b.filter( bug => bug.time == "All day")
+                    .map( (dto) =>
                     ({
                       name: dto.name,
                       location: dto.location,
@@ -45,7 +41,6 @@ export class BugService {
                 )
             )
           )
-      )
   }
 
 /**
@@ -53,8 +48,8 @@ export class BugService {
  * checkmark, and updates the caught property
  * @param bugName name of bug selected
  */
-  checkBugCaught(bugName: string) { // Fix this, need to fix check boxes
-  this.logger.debug("bugName= "+bugName);
+  checkBugCaught(bugName: string) {
+  this.logger.debug("checkBugCaught() bug-service  bugName: "+bugName);
   this.data = this.state.getValue();
   let updated = this.data.pipe(
     map(bugs => {
@@ -74,7 +69,7 @@ export class BugService {
  * @returns Observable bug value that was selected
  */
   findBugService(bugName: string): Observable<Bug> {
-    this.logger.debug("findBugService() => "+bugName);
+    this.logger.debug("findBugService() bug-service   bugName: "+bugName);
     this.data = this.state.getValue();
     return this.data.pipe(
                     map(bugs => 

@@ -3,7 +3,6 @@ import { NGXLogger } from 'ngx-logger';
 import Config from '../../../assets/config/config.json';
 import { BugAPI } from './config,model';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -25,5 +24,4 @@ export class ConfigService {
     }
     return this.bugConfig;
   }
-
 }

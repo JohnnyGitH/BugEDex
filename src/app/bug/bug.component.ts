@@ -34,7 +34,7 @@ export class BugComponent implements OnInit {
     if(!this.bugService.checkBugsLoaded()){
       this.bugService.getBugsData();
     }
-    this.logger.debug("ngOnInit.loadBugs()")
+    this.logger.debug("ngOnInit bug-component")
     this.loadBugs();
   }
 
@@ -43,7 +43,7 @@ export class BugComponent implements OnInit {
    * to populate table in the template
    */
   loadBugs() {
-    this.logger.debug("loadBugs(): loading Bug Service bugs")
+    this.logger.debug("loadBugs() bug-component")
     this.data = this.bugService.state.getValue();
     this.data.subscribe( data => {
       this.dataSource = data;
@@ -56,9 +56,8 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   bugClick(bugName: string){
-    this.logger.debug("BugClick() bug component");
-    this.router.navigateByUrl("/bug?name="+bugName);// try something different. Part of the template.
-    //this.router.navigate(['/bug?name='+bugName]); // little different
+    this.logger.debug("bugClick() bug-component bugName: "+bugName);
+    this.router.navigate(['/bug'], { queryParams:{ name: bugName }})
   }
 
   /**
@@ -67,6 +66,8 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   checkBugCaught(bugName: string) {
+    this.logger.debug("checkBugCaught() bug-component  bugName: "+ bugName);
     this.bugService.checkBugCaught(bugName);
+    this.loadBugs();
   }
 }

@@ -12,11 +12,11 @@
         <p><label data-testid="caught-label" for="caught">Caught: 
             <div *ngIf="bug?.caught === true">
                 <mat-checkbox [checked]="true" [disabled]="true"></mat-checkbox>
-                <b>Health is checked.</b>
+                <b>You caught this one!</b>
              </div>   
              <div *ngIf="bug?.caught === false">
               <mat-checkbox [checked]="false" [disabled]="true"></mat-checkbox>
-                <b>Trust is checked.</b>
+                <b>Keep looking!</b>
              </div>
             <input type="checkbox" *ngIf>
         </label></p>
