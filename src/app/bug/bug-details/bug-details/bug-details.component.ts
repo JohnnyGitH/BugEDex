@@ -16,15 +16,16 @@ export class BugDetailsComponent implements OnInit {
   bug: Bug;
   data: Observable<Bug[]>;
 
-  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router,private logger: NGXLogger) { }
+  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router,private logger: NGXLogger) {}
 
   /**
    * Gets bugName from query param
    */
   ngOnInit(): void {
     this.bugName = this.route.snapshot.queryParams.name;
-    this.findBug(this.bugName)
-    this.logger.debug("bugName = "+ this.bugName+"& bugCaught = "+ this.bugCaught);
+    this.bugService.findBugService(this.bugName).subscribe((data) => {
+      this.bug = data
+    })
   }
 
   /**
@@ -32,15 +33,7 @@ export class BugDetailsComponent implements OnInit {
   * back to the bugs page with the list of bugs
   */
   backClick(){
-    this.router.navigateByUrl("/bugs"); // Use something new! Browser saves state. If page is new page no backsies
-  }
-
-  /**
-   * This method calls bug service with the
-   * bugs name
-   * @param bugName name of bug selected
-   */
-  findBug(bugName: string) {
-    this.bug = this.bugService.findBugService(bugName);
+    //this.router.navigateByUrl("/bugs"); // Use something new! Browser saves state. If page is new page no backsies
+    this.router.navigate(['/bugs']);
   }
 }

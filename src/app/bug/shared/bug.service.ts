@@ -14,7 +14,8 @@ import { NGXLogger} from "ngx-logger";
 export class BugService {
   state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); 
   data: Observable<Bug[]>;
-  default: boolean = false;
+  default: boolean = false; // Doesn't work in setting the value
+  bug: Observable<Bug>;
   
   // Look into standard practice behaviour subject
 
@@ -38,7 +39,7 @@ export class BugService {
                       time: dto.time,
                       price: dto.price,
                       month: dto.month,
-                      caught: this.default,
+                      caught: false,
                     } as Bug)
                   )
                 )
@@ -47,13 +48,12 @@ export class BugService {
       )
   }
 
-
 /**
  * This method finds the bug being selected for
  * checkmark, and updates the caught property
  * @param bugName name of bug selected
  */
-  checkBugCaught(bugName: string) {
+  checkBugCaught(bugName: string) { // Fix this, need to fix check boxes
   this.logger.debug("bugName= "+bugName);
   this.data = this.state.getValue();
   let updated = this.data.pipe(
@@ -66,28 +66,35 @@ export class BugService {
   this.state.next(updated);
  }
 
-/**
+ /**
  * This method finds the bug  selected and
  * assigns it to the bugDetail object
  * to be displayed for the user.
  * @param bugName name of bug selected
+ * @returns Observable bug value that was selected
  */
-  findBugService(bugName: string): Bug {
-    this.logger.debug("findBug() => "+bugName);
-    console.log(); // ngxlogger
+  findBugService(bugName: string): Observable<Bug> {
+    this.logger.debug("findBugService() => "+bugName);
     this.data = this.state.getValue();
-    this.data.pipe(
-      map(bugs => 
-        bugs.find(bug => bug.name === bugName))
-    ).subscribe(bugDetail => 
-      {
-         return bugDetail; // unable to return here
-      }   
+    return this.data.pipe(
+                    map(bugs => 
+                        bugs.find(bug => bug.name === bugName,
+                        bugs.map( (bugDetail) =>
+                        ({
+                          name: bugDetail.name,
+                          location: bugDetail.location,
+                          price: bugDetail.price,
+                          month: bugDetail.month,
+                          time: bugDetail.time,
+                          caught: bugDetail.caught,
+                        } as Bug)
+                    )
+                )
+          )
     )
-    return null;
   }
 
-/**
+ /**
  * This method checks the state and
  * returns a boolean
  * @returns boolean true if state has data

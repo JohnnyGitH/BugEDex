@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
 import { NGXLogger} from "ngx-logger";
+import { ConfigService } from './config/config.service';
 
 /**
  * This component is responsible for displaying the bug
@@ -22,7 +23,7 @@ export class BugComponent implements OnInit {
   dataSource: Bug[] = [];
   data: Observable<Bug[]>;
 
-  constructor(private bugService: BugService, private logger: NGXLogger, private router: Router) {}
+  constructor(private bugService: BugService, private logger: NGXLogger, private router: Router, private config: ConfigService) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table
@@ -55,7 +56,9 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   bugClick(bugName: string){
+    this.logger.debug("BugClick() bug component");
     this.router.navigateByUrl("/bug?name="+bugName);// try something different. Part of the template.
+    //this.router.navigate(['/bug?name='+bugName]); // little different
   }
 
   /**

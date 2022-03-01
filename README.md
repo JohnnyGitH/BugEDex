@@ -101,11 +101,10 @@ typescript                      4.5.4
 ```
 
 Requested Work:
-- Add DTO model
-- Bug Service - Needs to be handling the filtering
 - Create methods in service so state isn't exposed directly to the component
 - check if filter in Bug service does what i think it does
-- 
+- Update logger
+- Fix tests broken by these changes
 
 ## Development server
 
