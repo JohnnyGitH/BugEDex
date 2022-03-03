@@ -35,8 +35,3 @@ describe('BugDataService', () => {
     });
   })
 });
-// Take a look at spectator readme - specifically for createHTTPFactories
-// what kind of configuration.
-// RULE OF THUMB - subscribe, sometimes async. Need the Done().
-// Look into jasmine Done function
-// 

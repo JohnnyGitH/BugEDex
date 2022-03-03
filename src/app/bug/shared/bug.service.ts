@@ -12,7 +12,7 @@ import { NGXLogger} from "ngx-logger";
  * This service uses the data service to get the bug data
  */
 export class BugService {
-  state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); 
+  private state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); // private state
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
 
@@ -23,8 +23,10 @@ export class BugService {
  * Service needs to filter by All Day
  * Service needs to assign false to caught property
  */
-  getBugsData() {
-    this.logger.debug("Bug Service, preparing for bug component, getBugs()");
+  getBugsData() {// consider conditional as to whether state has value CHECK BUG DATA , initialize in  naming. WITH CHECK
+    if(!this.checkBugsLoaded())
+    {
+      this.logger.debug("Bug Service, preparing for bug component, getBugs()"); // instead of get I am loading it
     this.state.next(this.dataService.getBugs()
                 .pipe(
                   map( b => b.filter( bug => bug.time == "All day")
@@ -40,7 +42,9 @@ export class BugService {
                   )
                 )
             )
-          )
+          ) 
+    }
+    // do nothing if bugs are already loaded
   }
 
 /**
@@ -50,9 +54,8 @@ export class BugService {
  */
   checkBugCaught(bugName: string) {
   this.logger.debug("checkBugCaught() bug-service  bugName: "+bugName);
-  this.data = this.state.getValue();
-  let updated = this.data.pipe(
-    map(bugs => {
+  let updated = this.state.getValue().pipe(
+      map(bugs => {
       const index = bugs.findIndex( bug => bug.name == bugName);
       bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
       return bugs;
@@ -68,10 +71,9 @@ export class BugService {
  * @param bugName name of bug selected
  * @returns Observable bug value that was selected
  */
-  findBugService(bugName: string): Observable<Bug> {
+  findBug(bugName: string): Observable<Bug> {
     this.logger.debug("findBugService() bug-service   bugName: "+bugName);
-    this.data = this.state.getValue();
-    return this.data.pipe(
+    return this.state.getValue().pipe(
                     map(bugs => 
                         bugs.find(bug => bug.name === bugName,
                         bugs.map( (bugDetail) =>
@@ -87,6 +89,14 @@ export class BugService {
                 )
           )
     )
+  }
+
+  /**
+   * Get the state and return the value
+   * @returns an observable array of bugs
+   */
+  getState(): Observable<Bug[]> {
+    return this.state.getValue()
   }
 
  /**

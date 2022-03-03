@@ -6,12 +6,14 @@ import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
+import { Observable,BehaviorSubject } from 'rxjs';
 
 describe('BugService', () => {
   let spectator: SpectatorHttp<BugService>;
   let service: BugService;
   let mockDataService: BugDataService;
   let data: Bug[];
+  let testState: Observable<Bug[]>;
 
   const createService = createHttpFactory({ // Understand createHTTPFactory - not appropriate. createServiceFactor
     service:BugService,
@@ -50,7 +52,7 @@ describe('BugService', () => {
     data = createFakeBugArray();
     spectator = createService();
     service = spectator.service;
-    
+    testState =spectator.service.getState()
     mockDataService = spectator.inject(BugDataService); // incorrect, Hannah says it might not work
   });
 
@@ -66,8 +68,9 @@ describe('BugService', () => {
     it("should get the bug data into the state", () => {
       mockDataService.getBugs();
       spectator.service.getBugsData()
+      testState = spectator.service.getState();
 
-      expect(spectator.service.state).not.toBeEmpty;
+      expect(testState).not.toBeEmpty;
     });
 
     it("should get bug data from API ", () => {
@@ -76,17 +79,10 @@ describe('BugService', () => {
       const expect = data;
 
       spectator.service.getBugsData();
+      testState = spectator.service.getState();
 
-      const actual = spectator.service.state;
+      const actual = testState;
+      //expect(expect).toEqual(actual);
     });
   })
 });
-
-
-// checkbox reload
-// live load
-// Take a look at spectator readme - specifically for createHTTPFactories
-// what kind of configuration.
-// RULE OF THUMB - subscribe, sometimes async. Need the Done().
-// Look into jasmine Done function
-// 

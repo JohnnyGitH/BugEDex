@@ -31,9 +31,10 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    if(!this.bugService.checkBugsLoaded()){
+    this.bugService.getBugsData();
+    /*if(!this.bugService.checkBugsLoaded()){ // shouldnt be here. Component should be just the UI stuff.  should be inside bug service
       this.bugService.getBugsData();
-    }
+    }*/
     this.logger.debug("ngOnInit bug-component")
     this.loadBugs();
   }
@@ -44,10 +45,9 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.logger.debug("loadBugs() bug-component")
-    this.data = this.bugService.state.getValue();
-    this.data.subscribe( data => {
-      this.dataSource = data;
-    })
+    this.bugService.getState().subscribe( data => {
+        this.dataSource = data;
+      })
     }
 
   /**

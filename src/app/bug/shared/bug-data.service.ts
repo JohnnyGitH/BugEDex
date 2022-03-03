@@ -4,14 +4,18 @@ import { HttpClient} from '@angular/common/http';
 import { BugDTO } from './models/bug.dto.model';
 import { NGXLogger} from "ngx-logger";
 import { ConfigService } from '../config/config.service';
+import { BugAPI } from '../config/config,model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class BugDataService {
+  config: BugAPI;
 
-  constructor(private http: HttpClient, private logger: NGXLogger, private bugConfig: ConfigService) { }
+  constructor(private http: HttpClient, private logger: NGXLogger, private bugConfig: ConfigService) {
+    this.config = bugConfig.loadConfiguration();
+   }
 
   /**
    * Accesses API, getting bug data
@@ -19,9 +23,8 @@ export class BugDataService {
    * @returns Observable of Bug array
    */
   getBugs(): Observable<BugDTO[]> {
-    let config = this.bugConfig.loadConfiguration();
-    this.logger.debug("BaseUrl: "+config.bugUrl+" bug endpoint:"+config.bugEndpoint)
-    return this.http.get<BugDTO[]>(config.bugUrl.concat(config.bugEndpoint));
+    this.logger.debug("BaseUrl: "+this.config.bugUrl+" bug endpoint:"+this.config.bugEndpoint)
+    return this.http.get<BugDTO[]>(this.config.bugUrl.concat(this.config.bugEndpoint));
   }
 }
 

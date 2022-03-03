@@ -101,10 +101,17 @@ typescript                      4.5.4
 ```
 
 Requested Work:
-- Create methods in service so state isn't exposed directly to the component
-- check if filter in Bug service does what i think it does
-- Update logger
+- Create methods in service so state isn't exposed directly to the component - DONE
+- check if filter in Bug service does what i think it does - DONE
+- Update logger - DONE
+- Fix config service to data service - DONE
+- 
 - Fix tests broken by these changes
+- GITHUB ACTION *** Publish to GithubPage
+- Take a look at spectator readme - specifically for createHTTPFactories
+- RULE OF THUMB - subscribe, sometimes async. Need the Done().
+- Look into jasmine Done function
+
 
 ## Development server
 

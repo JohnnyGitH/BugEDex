@@ -5,13 +5,16 @@ import { BugComponent } from './bug.component';
 import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import * as faker from 'faker';
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
   let component: BugComponent;
   let bugService: SpyObject<BugService>;
   let routerMock: SpyObject<Router>;
+  let queryName = faker.random.name();
+  let testState: BehaviorSubject<Observable<Bug[]>>; //= new BehaviorSubject<Observable<Bug[]>>(null);
 
   const createComponent = createComponentFactory({
       component: BugComponent,
@@ -21,7 +24,7 @@ describe('BugComponent', () => {
       providers:[
         {
           provide: ActivatedRoute, // better way
-          useValue: { snapshot: { queryParams: { name: "butterfly"}}} // spectator
+          useValue: { snapshot: { queryParams: { name: queryName}}} // spectator
         }
       ],
       detectChanges: false,
@@ -33,10 +36,10 @@ describe('BugComponent', () => {
 
   const createFakeBugModel = (): Bug => {
     return {
-      name: "butterfly",
-      location: "location",
-      time: "time",
-      price: 1,
+      name: faker.random.word(),
+      location: faker.random.word(),
+      time: faker.random.word(),
+      price: faker.datatype.number("min:1","max:10"), // Weird - Not sure if its working
       month:{
         north:[],
         south:[]
@@ -49,7 +52,7 @@ describe('BugComponent', () => {
     spectator = createComponent();
     component = spectator.component;
     bugService = spectator.inject(BugService);
-    bugService.state = new BehaviorSubject<any>([]);
+    testState = new BehaviorSubject<any>([]);
     routerMock = spectator.inject(Router);
 
   });
@@ -64,12 +67,12 @@ describe('BugComponent', () => {
   describe("loadBugs()", () => {
     let bugArray = [];
 
-    for(let i=0;i<10;i++){ // reminder to use faker
+    for(let i=0;i<10;i++){
       bugArray.push({
-        name:"butterfly"+i,
-        location:"location"+i,
-        time:"time"+i,
-        price: 10+i,
+        name:faker.random.word()+i,
+        location:faker.random.word()+i,
+        time:faker.random.word()+i,
+        price: faker.datatype.number()+i,
         month:{
           north:[],
           south:[]
@@ -79,7 +82,7 @@ describe('BugComponent', () => {
     }
   
     it('should load bugs into the dataSource', () =>{
-      bugService.state = new BehaviorSubject<any>(of(bugArray));
+      testState = new BehaviorSubject<any>(of(bugArray));
       spectator.component.loadBugs();
       expect(spectator.component.dataSource).toEqual(bugArray)
     });
@@ -107,7 +110,7 @@ describe('BugComponent', () => {
         inputArrayBug = bArray[0];
         foundBug.caught = inputArrayBug.caught;
         foundBug.name = inputArrayBug.name;
-        bugService.state = new BehaviorSubject<any>(of(bArray));
+        testState = new BehaviorSubject<any>(of(bArray));
 
         // Make sure foundbug name is correct and caught is false
         expect(foundBug.name).toEqual(bugName);
@@ -115,7 +118,7 @@ describe('BugComponent', () => {
   
         // Call checkBugCaught()
         spectator.component.checkBugCaught(bugName);
-        let afterArray = bugService.state.getValue();
+        let afterArray = testState.getValue();
         afterArray.subscribe( res => {
           console.log(res)
           expect(res[0].caught).toBeTruthy;
@@ -128,11 +131,11 @@ describe('BugComponent', () => {
     describe("bugClick()", () => {
 
       it("should navigate to the /bug page with the name of selected bug", () => {
-          let bugName = 'butterfly'
+          let bugName = queryName
           spectator.component.bugClick(bugName);
 
-          expect(routerMock.navigateByUrl).toHaveBeenCalledTimes(1);
-          expect(routerMock.navigateByUrl).toHaveBeenCalledWith("/bug?name="+bugName);
+          expect(routerMock.navigate).toHaveBeenCalledTimes(1);
+          expect(routerMock.navigate).toHaveBeenCalledWith("/bug?name="+queryName);
       })
     })
 });
