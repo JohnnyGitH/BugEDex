@@ -6,6 +6,7 @@ import { Bug } from './shared/models/bug.model';
 import { NGXLogger} from "ngx-logger";
 import { ConfigService } from './config/config.service';
 
+
 /**
  * This component is responsible for displaying the bug
  * data from the bug service onto a table
@@ -32,9 +33,6 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.bugService.getBugsData();
-    /*if(!this.bugService.checkBugsLoaded()){ // shouldnt be here. Component should be just the UI stuff.  should be inside bug service
-      this.bugService.getBugsData();
-    }*/
     this.logger.debug("ngOnInit bug-component")
     this.loadBugs();
   }
