@@ -31,6 +31,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
           node-version: ${{ matrix.node-version }}
+    - name: Run The Tests
       run: npm test
 #    - name: Push build to releases 
 #     uses: ncipollo/release-action@v1
