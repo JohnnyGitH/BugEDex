@@ -1,45 +1,30 @@
 import { Injectable } from '@angular/core';
-import { map, Observable, throwError, timeout } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient} from '@angular/common/http';
-import { Bug } from './models/bug.model';
-
-// I will make these a config of some sort
-const endpoint = "/data/v1/bug.json";
-const baseUrl = "https://www.xhsun.me/acnh-api/"; // add as configuration
+import { BugDTO } from './models/bug.dto.model';
+import { NGXLogger} from "ngx-logger";
+import { ConfigService } from '../config/config.service';
+import { BugAPI } from '../config/config,model';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class BugDataService {
+  config: BugAPI;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private logger: NGXLogger, private bugConfig: ConfigService) {
+    this.config = bugConfig.loadConfiguration();
+   }
 
   /**
-   * Accesses API, getting data
-   * Need to filter the time to all day
-   * Need to default the caught property to false
-   * 
+   * Accesses API, getting bug data
+   * Implement a timeout
    * @returns Observable of Bug array
    */
-  getBugs(): Observable<Bug[]> { // Implement a timeout
-    console.log("GET Request for Bugs");
-    return this.http
-            .get<Bug[]>(baseUrl.concat(endpoint))
-            .pipe(
-              map( b => 
-                b.filter( bug => bug.time == "All day", // Getting bugs around All day - configuration
-                b.filter( bug => bug.caught = false) // Setting default to false
-                )
-            )
-          )
+  getBugs(): Observable<BugDTO[]> {
+    this.logger.debug("BaseUrl: "+this.config.bugUrl+" bug endpoint:"+this.config.bugEndpoint)
+    return this.http.get<BugDTO[]>(this.config.bugUrl.concat(this.config.bugEndpoint));
   }
 }
 
-// Not sure if filter does what I think.
-// Look into second filter
-
-// Should be using a DTO model, so all API properties
-// Mapping it into the domain model, setting caught property.
-
-// Wants filtering in service.

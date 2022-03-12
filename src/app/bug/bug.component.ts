@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { BugService } from './shared/bug.service';
 import { Bug } from './shared/models/bug.model';
+import { NGXLogger} from "ngx-logger";
+import { ConfigService } from './config/config.service';
+
 
 /**
  * This component is responsible for displaying the bug
@@ -19,12 +22,9 @@ export class BugComponent implements OnInit {
 
   // data for the component template table
   dataSource: Bug[] = [];
-  chosenBug: Bug; // remove unused stuff
-  caughtBug: Bug;
   data: Observable<Bug[]>;
-  persist: Observable<Bug[]>;
 
-  constructor(private bugService: BugService, private route: ActivatedRoute, private router: Router) {}
+  constructor(private bugService: BugService, private logger: NGXLogger, private router: Router, private config: ConfigService) {}
 
   /**
    * When the page initializes, we want to load the bugs into the table
@@ -32,12 +32,8 @@ export class BugComponent implements OnInit {
    * from local datasource
    */
   ngOnInit(): void {
-    this.persist = this.bugService.state.getValue() // bug service method
-    if(!this.persist){
-      this.bugService.getBugsData();// need to only do this the first time
-
-    }
-    console.log("ngOnInit.loadBugs()")
+    this.bugService.getBugsData();
+    this.logger.debug("ngOnInit bug-component")
     this.loadBugs();
   }
 
@@ -46,12 +42,10 @@ export class BugComponent implements OnInit {
    * to populate table in the template
    */
   loadBugs() {
-    console.log("loadBugs(): loading Bug Service bugs");
-    this.data = this.bugService.state.getValue();
-    this.data.subscribe( data => {
-      console.log(data);
-      this.dataSource = data;
-    })
+    this.logger.debug("loadBugs() bug-component")
+    this.bugService.getState().subscribe( data => {
+        this.dataSource = data;
+      })
     }
 
   /**
@@ -60,7 +54,8 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   bugClick(bugName: string){
-    this.router.navigateByUrl("/bug?name="+bugName);// try something different. Part of the template.
+    this.logger.debug("bugClick() bug-component bugName: "+bugName);
+    this.router.navigate(['/bug'], { queryParams:{ name: bugName }})
   }
 
   /**
@@ -69,17 +64,8 @@ export class BugComponent implements OnInit {
    * @param bugName name of bug selected
    */
   checkBugCaught(bugName: string) {
-    console.log("bug.checkBugCaught() => "+bugName);
-    this.data = this.bugService.state.getValue();
-    let updated = this.data.pipe(
-      map(bugs => {
-        const index = bugs.findIndex( bug => bug.name == bugName);
-        bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
-        return bugs;
-      })
-    )
-    this.bugService.state.next(updated);
+    this.logger.debug("checkBugCaught() bug-component  bugName: "+ bugName);
+    this.bugService.checkBugCaught(bugName);
+    this.loadBugs();
   }
 }
-
-// cheBugCaught - MOVE TO SERVICE

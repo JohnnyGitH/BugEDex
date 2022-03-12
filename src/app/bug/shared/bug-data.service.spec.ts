@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { createHttpFactory, HttpMethod, SpectatorHttp } from '@ngneat/spectator';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BugDataService } from './bug-data.service';
 
 describe('BugDataService', () => {
@@ -11,7 +12,9 @@ describe('BugDataService', () => {
 
   const createService = createHttpFactory({
     service: BugDataService,
-    imports: [HttpClientTestingModule],
+    imports: [
+      HttpClientTestingModule,
+      LoggerTestingModule],
     providers: [
       HttpClient,
     ]
@@ -35,8 +38,3 @@ describe('BugDataService', () => {
     });
   })
 });
-// Take a look at spectator readme - specifically for createHTTPFactories
-// what kind of configuration.
-// RULE OF THUMB - subscribe, sometimes async. Need the Done().
-// Look into jasmine Done function
-// 

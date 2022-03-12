@@ -49,11 +49,11 @@
         Is It caught?: {{bug.caught}}
         <div *ngIf="bug.caught === true">
           <mat-checkbox [checked]="true"></mat-checkbox>
-          <b>Health is checked.</b>
+          <b>True</b>
        </div>   
        <div *ngIf="bug.caught === false">
         <mat-checkbox [checked]="false"></mat-checkbox>
-          <b>Trust is checked.</b>
+          <b>False</b>
        </div>
       </td>
     </ng-container>
@@ -63,7 +63,4 @@
 </table>
 <p>
   <button routerLink="/bug">ClickTestForDetailsPage</button>
-</p>
-<p>
-  <!--<label>Datasource Array Length {{dataSource.length}}</label>-->
 </p>

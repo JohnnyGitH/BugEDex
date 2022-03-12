@@ -9,5 +9,5 @@ export interface Bug {
     time: string;
     price: number;
     month: Month;
-    caught: boolean;
+    caught?: boolean;
   }
