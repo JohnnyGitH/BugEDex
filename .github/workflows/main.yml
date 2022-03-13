@@ -25,3 +25,5 @@ jobs:
       run: |
         npm i
         npm run build
+    - name: Run Tests
+    - run: npm test -- --watch=false --browsers=ChromeHeadless
