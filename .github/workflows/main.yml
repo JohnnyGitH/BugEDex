@@ -26,4 +26,4 @@ jobs:
         npm i
         npm run build
     - name: Run Tests
-    - run: ng test -- --watch=false --browsers=ChromeHeadless
+    - run: ng test --browsers=ChromeHeadless
