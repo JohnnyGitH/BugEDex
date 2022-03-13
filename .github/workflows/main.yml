@@ -25,5 +25,5 @@ jobs:
       run: |
         npm i
         npm run build
-    - name: Run Tests
-    - run: ng test --browsers=ChromeHeadless
+    - name: Testing
+      run: ng test
