@@ -27,5 +27,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - name: Run Build
     - run: npm run build --if-present
-    - run: npm run test
+    - name: Run Tests
+    - run: npm test -- --watch=false --browsers=ChromeHeadless
