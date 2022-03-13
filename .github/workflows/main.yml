@@ -1,5 +1,5 @@
 on: push
-name: Building BugEDex
+name: NPM install and Build BugEDex
 jobs:
   build:
     runs-on: ubuntu-latest
