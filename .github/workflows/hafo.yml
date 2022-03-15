@@ -1,12 +1,9 @@
 name: workflow name
 
-on:
-  push:
-    branches:
-      - 'master'
+on: [push]
 
 jobs:
-  build:
+  build-and-deploy:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
