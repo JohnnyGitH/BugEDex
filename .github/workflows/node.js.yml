@@ -3,7 +3,7 @@
 
 name: Build and Testing BugEDex
 
-on:
+#on:
   push:
     branches: [ master ]
   pull_request:
