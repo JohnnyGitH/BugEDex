@@ -44,8 +44,14 @@ export class BugComponent implements OnInit {
   loadBugs() {
     this.logger.debug("loadBugs() bug-component")
     this.bugService.getState().subscribe( data => {
+        this.logger.debug("Data length is :"+data.length)
+        this.logger.debug("Data values is :"+data.values)
         this.dataSource = data;
       })
+      this.logger.debug("Datasource :"+ this.dataSource);
+      for(let i=0;i<this.dataSource.length;i++){
+        this.logger.debug("datasource items "+ this.dataSource[i]);
+      }
     }
 
   /**

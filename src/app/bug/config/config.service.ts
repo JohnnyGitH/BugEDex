@@ -17,7 +17,7 @@ export class ConfigService {
    * @returns a bug config
    */
   loadConfiguration(): BugAPI {
-    this.logger.debug(Config);
+    this.logger.debug("The config service: "+Config);
     this.bugConfig = {
       bugEndpoint: Config.bugAPI.bugEndpoint,
       bugUrl: Config.bugAPI.bugUrl
