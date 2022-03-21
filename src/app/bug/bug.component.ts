@@ -43,9 +43,12 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.logger.debug("loadBugs() bug-component")
-    this.bugService.getState().subscribe( data => {
-        this.dataSource = data;
+    this.bugService.getState().subscribe( data => { // not sure if actual data is here
+        this.logger.debug("Data length is :"+data.length)
+        this.logger.debug("Data values is :"+data.values)
+        this.dataSource = data; // something here is broken, not assigning yet or something.  
       })
+      this.logger.debug("Datasource :"+ this.dataSource[0]);
     }
 
   /**

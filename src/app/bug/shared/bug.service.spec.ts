@@ -1,30 +1,21 @@
-import { HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {  SpectatorHttp, createHttpFactory } from '@ngneat/spectator'
+import { createServiceFactory, SpectatorService } from '@ngneat/spectator'
 import { BugDataService } from "./bug-data.service";
 import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { Observable } from 'rxjs';
-import { LoggerTestingModule } from 'ngx-logger/testing';
+import { Observable, of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('BugService', () => {
-  let spectator: SpectatorHttp<BugService>;
+  let spectator: SpectatorService<BugService>;
   let service: BugService;
   let mockDataService: BugDataService;
-  let data: Bug[];
+  let data: Observable<Bug[]>;
   let testState: Observable<Bug[]>;
 
-  const createService = createHttpFactory({ // Understand createHTTPFactory - not appropriate. createServiceFactor
-    service:BugService,
-    imports: [
-      HttpClientTestingModule,
-      LoggerTestingModule],
-    providers:[
-      HttpClient,
-    ]
-  });
+  // Understand createHTTPFactory - not appropriate. createServiceFactor
+  const createService = createServiceFactory(BugService);
 
   const createFakeBugModel = (): Bug => {
     let bug = {
@@ -41,25 +32,24 @@ describe('BugService', () => {
     return bug;
   }
 
-  const createFakeBugArray = (): Bug[] => {
+  const createFakeBugArray = (): Observable<Bug[]> => {
     let counter = 5;
     let bugArray: Bug[] = [];
     for(let i =0;i<counter;i++){
         bugArray.push(createFakeBugModel());
     }
-    return bugArray;
+    return of(bugArray);
   }
-  
-  
+
   beforeEach(() => {
-    data = createFakeBugArray();
-    spectator = createService();
+    data = createFakeBugArray(),
+    spectator = createService(),
     service = spectator.service;
     testState =spectator.service.getState()
     mockDataService = spectator.inject(BugDataService); // incorrect, Hannah says it might not work
   });
 
-  it('should be created', () => {
+  it('should be created', () => { // failed
     expect(spectator.service).toBeTruthy();
   });
 
@@ -68,28 +58,38 @@ describe('BugService', () => {
    */
   describe('getBugsData()', () => {
     
-    it("should get the bug data into the state", () => {
+    it("should get the bug data into the state", () => { // failed
       mockDataService.getBugs();
       spectator.service.getBugsData()
       testState = spectator.service.getState();
 
       expect(testState).not.toBeEmpty;
     });
-    /*
-    it("should get bug data from API ", () => {
+    
+    it("should get bug data from API ", () => { // failed
       spectator.inject(BugService).getBugsData.and.returnValue(data);
       spectator.service.getBugsData()
-      const expect = data;
+      const expect = of(data);
 
       spectator.service.getBugsData();
       testState = spectator.service.getState();
 
-      const actual = testState;
-      //expect(expect).toEqual(actual);
-    });*/
+      const actual = testState;// observable
+
+      //compare both observables
+      
+
+
+      /*
+      actual.subscribe((bug) =>{
+        expect(bug).toEqual
+      })
+      expect(expect).toEqual(actual);*/
+    });
   })
- /* describe("findBug()", ()=>{
-    let data: Bug[] = [];
+  /*
+  describe("findBug()", ()=>{
+    data =: Observable<Bug[]>;
     data = createFakeBugArray();
 
     it("should find the bug being selected and display in the template", () => {
@@ -109,20 +109,20 @@ describe('BugService', () => {
       console.log("Bug name is: "+bugName+" and chosen bug is: "+ chosenBug.name);
 
       // Call findBug()
-      data = spectator.bugService.findBug(bugName);
+      data = spectator.service.findBug(bugName);
 
       // test properties
-      console.log(spectator.component.bug.name);
-      console.log(spectator.component.bug.caught);
+      console.log(spectator.service.bug.name);
+      console.log(spectator.service.bug.caught);
 
       // DETECT CHANGES ---- here
       //spectator.detectChanges(); // dies here
 
-      console.log(spectator.component.bug.name);
-      console.log(spectator.component.bug.caught);
+      console.log(spectator.service.bug.name);
+      console.log(spectator.service.bug.caught);
 
       // find the bug being selected
-      expect(spectator.component.bug.name).toEqual(bugName); // bug?.name
+      expect(spectator.service.bug.name).toEqual(bugName); // bug?.name
 
       // UI label element - LOOK INTO IT
       const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]')); // access native elements to access data inside the label

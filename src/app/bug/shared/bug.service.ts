@@ -15,6 +15,7 @@ export class BugService {
   private state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); // private state
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
+  loaded: Observable<Bug[]>;
 
   constructor(private dataService: BugDataService,private logger: NGXLogger) { }
 
@@ -23,11 +24,11 @@ export class BugService {
  * Service needs to filter by All Day
  * Service needs to assign false to caught property
  */
-  getBugsData() {// consider conditional as to whether state has value CHECK BUG DATA , initialize in  naming. WITH CHECK
-    if(!this.checkBugsLoaded())
+  getBugsData() {   
+    if(this.checkBugsLoaded())
     {
       this.logger.debug("Bug Service, preparing for bug component, getBugs()"); // instead of get I am loading it
-    this.state.next(this.dataService.getBugs()
+      this.state.next(this.dataService.getBugs()
                 .pipe(
                   map( b => b.filter( bug => bug.time == "All day")
                     .map( (dto) =>
@@ -44,6 +45,10 @@ export class BugService {
             )
           ) 
     }
+    this.logger.debug("Skipped getBugs() call");
+    this.logger.debug("state should have value then: getValue() "+ this.state.getValue());
+    this.logger.debug("state should have value then: value "+ this.state.value);
+    this.logger.debug("state should have value then: "+ this.state);
     // do nothing if bugs are already loaded
   }
 
@@ -105,10 +110,13 @@ export class BugService {
  * @returns boolean true if state has data
  */
   checkBugsLoaded(): boolean {
-    let loaded = this.state.getValue();
-    if(loaded){
+    this.loaded = this.state.getValue();
+    this.logger.debug("Are they loaded?:"+ this.loaded);
+    if(this.loaded){
+      this.logger.debug("Returning True");
       return true;
     }
+    this.logger.debug("Returning False");
     return false;
   }
 }

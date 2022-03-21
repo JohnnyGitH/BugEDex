@@ -4,7 +4,7 @@ import { HttpClient} from '@angular/common/http';
 import { BugDTO } from './models/bug.dto.model';
 import { NGXLogger} from "ngx-logger";
 import { ConfigService } from '../config/config.service';
-import { BugAPI } from '../config/config,model';
+import { BugAPI } from '../config/config.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,8 @@ import { BugAPI } from '../config/config,model';
 export class BugDataService {
   config: BugAPI;
 
-  constructor(private http: HttpClient, private logger: NGXLogger, private bugConfig: ConfigService) {
-    this.config = bugConfig.loadConfiguration();
+  constructor(private http: HttpClient, private logger: NGXLogger, private cService: ConfigService) {
+    this.config = cService.loadConfiguration();
    }
 
   /**

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NGXLogger } from 'ngx-logger';
 import Config from '../../../assets/config/config.json';
-import { BugAPI } from './config,model';
+import { BugAPI } from './config.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class ConfigService {
    * @returns a bug config
    */
   loadConfiguration(): BugAPI {
-    this.logger.debug(Config);
+    this.logger.debug("The config service: "+Config);
     this.bugConfig = {
       bugEndpoint: Config.bugAPI.bugEndpoint,
       bugUrl: Config.bugAPI.bugUrl
