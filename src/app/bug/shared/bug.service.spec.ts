@@ -49,7 +49,7 @@ describe('BugService', () => {
     mockDataService = spectator.inject(BugDataService); // incorrect, Hannah says it might not work
   });
 
-  it('should be created', () => {
+  it('should be created', () => { // failed
     expect(spectator.service).toBeTruthy();
   });
 
@@ -58,7 +58,7 @@ describe('BugService', () => {
    */
   describe('getBugsData()', () => {
     
-    it("should get the bug data into the state", () => {
+    it("should get the bug data into the state", () => { // failed
       mockDataService.getBugs();
       spectator.service.getBugsData()
       testState = spectator.service.getState();
@@ -66,7 +66,7 @@ describe('BugService', () => {
       expect(testState).not.toBeEmpty;
     });
     
-    it("should get bug data from API ", () => {
+    it("should get bug data from API ", () => { // failed
       spectator.inject(BugService).getBugsData.and.returnValue(data);
       spectator.service.getBugsData()
       const expect = of(data);
