@@ -4,7 +4,7 @@ import { HttpClient} from '@angular/common/http';
 import { BugDTO } from './models/bug.dto.model';
 import { NGXLogger} from "ngx-logger";
 import { ConfigService } from '../config/config.service';
-import { BugAPI } from '../config/config,model';
+import { BugAPI } from '../config/config.model';
 
 @Injectable({
   providedIn: 'root'
