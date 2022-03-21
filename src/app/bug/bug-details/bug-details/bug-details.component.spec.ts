@@ -1,4 +1,3 @@
-import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { createComponentFactory, Spectator, SpyObject } from '@ngneat/spectator';
 import { BugService } from '../../shared/bug.service';
