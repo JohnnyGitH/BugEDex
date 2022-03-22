@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of, take } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
 import { NGXLogger} from "ngx-logger";
@@ -12,10 +12,11 @@ import { NGXLogger} from "ngx-logger";
  * This service uses the data service to get the bug data
  */
 export class BugService {
-  private state:BehaviorSubject<Observable<Bug[]>> =  new BehaviorSubject<Observable<Bug[]>>(null); // private state
+  // Private state working as persistence
+  private state:BehaviorSubject<Bug[]> =  new BehaviorSubject<Bug[]>([]);
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
-  loaded: Observable<Bug[]>;
+  loaded: number;
 
   constructor(private dataService: BugDataService,private logger: NGXLogger) { }
 
@@ -25,30 +26,32 @@ export class BugService {
  * Service needs to assign false to caught property
  */
   getBugsData() {   
-    if(this.checkBugsLoaded())
-    {
-      this.logger.debug("Bug Service, preparing for bug component, getBugs()"); // instead of get I am loading it
-      this.state.next(this.dataService.getBugs()
-                .pipe(
-                  map( b => b.filter( bug => bug.time == "All day")
-                    .map( (dto) =>
-                    ({
-                      name: dto.name,
-                      location: dto.location,
-                      time: dto.time,
-                      price: dto.price,
-                      month: dto.month,
-                      caught: false,
-                    } as Bug)
-                  )
-                )
-            )
-          ) 
-    }
+    let test = this.checkBugsLoaded();
+    this.logger.debug(test)
+    //if(!this.checkBugsLoaded())
+    //{
+      this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
+      this.dataService.getBugs()
+        .subscribe( (b) =>  {  // long running observable, could generate memory leak. Do pipe on obs and apply the take.
+          console.log(" B in b Servcie: ",b);
+      this.state.next(
+        b.filter( bug => bug.time == "All day")
+        .map( (dto) =>
+        ({
+          name: dto.name,
+          location: dto.location,
+          time: dto.time,
+          price: dto.price,
+          month: dto.month,
+          caught: false,
+        } as Bug)
+      )
+      )
+      }//, c => console.log("error things:", c),
+       //() => console.log("Subscribe finished")
+      );
+    //}
     this.logger.debug("Skipped getBugs() call");
-    this.logger.debug("state should have value then: getValue() "+ this.state.getValue());
-    this.logger.debug("state should have value then: value "+ this.state.value);
-    this.logger.debug("state should have value then: "+ this.state);
     // do nothing if bugs are already loaded
   }
 
@@ -59,13 +62,11 @@ export class BugService {
  */
   checkBugCaught(bugName: string) {
   this.logger.debug("checkBugCaught() bug-service  bugName: "+bugName);
-  let updated = this.state.getValue().pipe(
-      map(bugs => {
-      const index = bugs.findIndex( bug => bug.name == bugName);
-      bugs[index].caught? bugs[index].caught = false:bugs[index].caught = true;
-      return bugs;
-    })
-  )
+  let updated = this.state.getValue();
+
+  const index = updated.findIndex( bug => bug.name == bugName);
+  updated[index].caught? updated[index].caught = false:updated[index].caught = true;
+
   this.state.next(updated);
  }
 
@@ -76,32 +77,27 @@ export class BugService {
  * @param bugName name of bug selected
  * @returns Observable bug value that was selected
  */
-  findBug(bugName: string): Observable<Bug> {
+  findBug(bugName: string): Bug {
     this.logger.debug("findBugService() bug-service   bugName: "+bugName);
-    return this.state.getValue().pipe(
-                    map(bugs => 
-                        bugs.find(bug => bug.name === bugName,
-                        bugs.map( (bugDetail) =>
-                        ({
-                          name: bugDetail.name,
-                          location: bugDetail.location,
-                          price: bugDetail.price,
-                          month: bugDetail.month,
-                          time: bugDetail.time,
-                          caught: bugDetail.caught,
-                        } as Bug)
-                    )
-                )
-          )
-    )
-  }
+    let result = this.state.getValue()
+                        .find(bug => bug.name === bugName)
+    return    {
+                          name: result.name,
+                          location: result.location,
+                          price: result.price,
+                          month: result.month,
+                          time: result.time,
+                          caught: result.caught,
+                        }
+      }
+
 
   /**
    * Get the state and return the value
    * @returns an observable array of bugs
    */
   getState(): Observable<Bug[]> {
-    return this.state.getValue()
+    return this.state.asObservable(); // returns subject as observable, no next method. canpt pushonly listen  // I dont think this is returning the value any longer
   }
 
  /**
@@ -110,9 +106,9 @@ export class BugService {
  * @returns boolean true if state has data
  */
   checkBugsLoaded(): boolean {
-    this.loaded = this.state.getValue();
+    this.loaded = this.state.getValue().length;
     this.logger.debug("Are they loaded?:"+ this.loaded);
-    if(this.loaded){
+    if(this.loaded > 0){
       this.logger.debug("Returning True");
       return true;
     }

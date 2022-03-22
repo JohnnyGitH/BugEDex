@@ -25,9 +25,9 @@ export class BugDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.bugName = this.route.snapshot.queryParams.name;
     this.logger.debug("bugName: bug-details-component "+this.bugName);
-    this.bugService.findBug(this.bugName).subscribe((data) => {
-      this.bug = data
-    })
+    this.bug =this.bugService.findBug(this.bugName);
+
+
   }
 
   /**

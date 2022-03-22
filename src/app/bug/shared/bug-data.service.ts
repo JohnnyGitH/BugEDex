@@ -14,7 +14,7 @@ export class BugDataService {
   config: BugAPI;
 
   constructor(private http: HttpClient, private logger: NGXLogger, private cService: ConfigService) {
-    this.config = cService.loadConfiguration();
+    this.config = this.cService.loadConfiguration();
    }
 
   /**
@@ -24,6 +24,7 @@ export class BugDataService {
    */
   getBugs(): Observable<BugDTO[]> {
     this.logger.debug("BaseUrl: "+this.config.bugUrl+" bug endpoint:"+this.config.bugEndpoint)
+    this.http.get<BugDTO[]>(this.config.bugUrl.concat(this.config.bugEndpoint)).subscribe( (b) => console.log("data service pre http: ",b));
     return this.http.get<BugDTO[]>(this.config.bugUrl.concat(this.config.bugEndpoint));
   }
 }
