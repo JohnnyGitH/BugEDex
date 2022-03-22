@@ -10,7 +10,6 @@ import { BugDetailsComponent } from './bug/bug-details/bug-details/bug-details.c
 import { MatCardModule } from '@angular/material/card'
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 @NgModule({
   declarations: [
@@ -23,7 +22,6 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
     AppRoutingModule,
     MatTableModule,
     HttpClientModule,
-    HttpClientTestingModule,
     MatCommonModule,
     MatCardModule,
     MatCheckboxModule,
