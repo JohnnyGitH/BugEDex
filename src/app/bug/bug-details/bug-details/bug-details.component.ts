@@ -26,8 +26,6 @@ export class BugDetailsComponent implements OnInit {
     this.bugName = this.route.snapshot.queryParams.name;
     this.logger.debug("bugName: bug-details-component "+this.bugName);
     this.bug =this.bugService.findBug(this.bugName);
-
-
   }
 
   /**

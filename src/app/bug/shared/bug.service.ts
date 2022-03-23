@@ -28,13 +28,13 @@ export class BugService {
   getBugsData() {   
     let test = this.checkBugsLoaded();
     this.logger.debug(test)
-    //if(!this.checkBugsLoaded())
-    //{
+    if(!this.checkBugsLoaded())
+    {
       this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
       this.dataService.getBugs()
-        .subscribe( (b) =>  {  // long running observable, could generate memory leak. Do pipe on obs and apply the take.
-          console.log(" B in b Servcie: ",b);
-      this.state.next(
+        .subscribe( (b) =>  { 
+          console.log(" bugService:getBugs B : ",b);
+        this.state.next(
         b.filter( bug => bug.time == "All day")
         .map( (dto) =>
         ({
@@ -47,10 +47,9 @@ export class BugService {
         } as Bug)
       )
       )
-      }//, c => console.log("error things:", c),
-       //() => console.log("Subscribe finished")
+      }
       );
-    //}
+    }
     this.logger.debug("Skipped getBugs() call");
     // do nothing if bugs are already loaded
   }
@@ -97,7 +96,7 @@ export class BugService {
    * @returns an observable array of bugs
    */
   getState(): Observable<Bug[]> {
-    return this.state.asObservable(); // returns subject as observable, no next method. canpt pushonly listen  // I dont think this is returning the value any longer
+    return this.state.asObservable();
   }
 
  /**
@@ -107,12 +106,12 @@ export class BugService {
  */
   checkBugsLoaded(): boolean {
     this.loaded = this.state.getValue().length;
-    this.logger.debug("Are they loaded?:"+ this.loaded);
+    this.logger.debug("checkBug : Are they loaded?:"+ this.loaded);
     if(this.loaded > 0){
-      this.logger.debug("Returning True");
+      this.logger.debug("checkBug: Yes, True");
       return true;
     }
-    this.logger.debug("Returning False");
+    this.logger.debug("checkBug: No, False");
     return false;
   }
 }

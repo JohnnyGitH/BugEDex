@@ -111,6 +111,10 @@ Requested Work:
 - Take a look at spectator readme - specifically for createHTTPFactories
 - RULE OF THUMB - subscribe, sometimes async. Need the Done().
 - Look into jasmine Done function
+-
+- Get back to fixing tests
+    - Read Jasmine / Spectator (createHTTPFactories)
+    
 
 
 ## Development server

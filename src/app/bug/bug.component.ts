@@ -6,7 +6,6 @@ import { Bug } from './shared/models/bug.model';
 import { NGXLogger} from "ngx-logger";
 import { ConfigService } from './config/config.service';
 
-
 /**
  * This component is responsible for displaying the bug
  * data from the bug service onto a table
@@ -43,10 +42,10 @@ export class BugComponent implements OnInit {
    */
   loadBugs() {
     this.logger.debug("loadBugs() bug-component")
-    this.bugService.getState().subscribe( data => { // not sure if actual data is here
+    this.bugService.getState().subscribe( data => { 
         this.logger.debug("Data length is :"+data.length)
         this.logger.debug("Data values is :"+data.values)
-        this.dataSource = data; // something here is broken, not assigning yet or something.  
+        this.dataSource = data;
       })
       this.logger.debug("Datasource :"+ this.dataSource[0]);
     }
