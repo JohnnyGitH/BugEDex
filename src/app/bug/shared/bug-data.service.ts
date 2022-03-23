@@ -14,7 +14,7 @@ export class BugDataService {
   config: BugAPI;
 
   constructor(private http: HttpClient, private logger: NGXLogger, private cService: ConfigService) {
-    this.config = cService.loadConfiguration();
+    this.config = this.cService.loadConfiguration();
    }
 
   /**

@@ -1,7 +1,7 @@
 {
     "bugAPI":
     {
-        "bugEndpoint": "/data/v1/bug.json",
+        "bugEndpoint": "data/v1/bug.json",
         "bugUrl":"https://www.xhsun.me/acnh-api/"
     }
 }
