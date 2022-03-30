@@ -26,8 +26,8 @@ export class BugService {
  * Service needs to assign false to caught property
  */
   getBugsData() {   
-    let test = this.checkBugsLoaded();
-    this.logger.debug(test)
+    //let test = this.checkBugsLoaded();
+    //this.logger.debug(test)
     if(!this.checkBugsLoaded())
     {
       this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 

@@ -5,7 +5,7 @@ import { LoggerTestingModule } from 'ngx-logger/testing';
 import { BugDataService } from './bug-data.service';
 
 describe('BugDataService', () => {
-  const endpoint = "/data/v1/bug.json";
+  const endpoint = "data/v1/bug.json";
   const baseUrl = "https://www.xhsun.me/acnh-api/";
   let spectator: SpectatorHttp<BugDataService>;
   let service: BugDataService;
