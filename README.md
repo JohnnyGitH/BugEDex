@@ -105,16 +105,23 @@ Requested Work:
 - check if filter in Bug service does what i think it does - DONE
 - Update logger - DONE
 - Fix config service to data service - DONE
-- 
 - Fix tests broken by these changes
 - GITHUB ACTION *** Publish to GithubPage
 - Take a look at spectator readme - specifically for createHTTPFactories
 - RULE OF THUMB - subscribe, sometimes async. Need the Done().
 - Look into jasmine Done function
--
+
+
 - Get back to fixing tests
     - Read Jasmine / Spectator (createHTTPFactories)
     
+New Req
+- Fix Tests -> update
+- Github Actions -> update
+- Adding a Dev Container to this project. Dev Container. VS Code Dev container.
+
+FUTURE
+- Backend Service. GO -> data persistence - no removing
 
 
 ## Development server

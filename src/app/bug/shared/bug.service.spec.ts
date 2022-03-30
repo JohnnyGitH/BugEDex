@@ -1,21 +1,27 @@
-import { createServiceFactory, SpectatorService } from '@ngneat/spectator'
+import { createServiceFactory, SpectatorService, SpyObject } from '@ngneat/spectator'
 import { BugDataService } from "./bug-data.service";
 import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { Observable, of } from 'rxjs';
-import { By } from '@angular/platform-browser';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { LoggerTestingModule } from 'ngx-logger/testing';
 
 describe('BugService', () => {
   let spectator: SpectatorService<BugService>;
   let service: BugService;
-  let mockDataService: BugDataService;
-  let data: Observable<Bug[]>;
+  let mockDataService: SpyObject<BugDataService>;
+  let data: Bug[];
   let testState: Observable<Bug[]>;
 
   // Understand createHTTPFactory - not appropriate. createServiceFactor
-  const createService = createServiceFactory(BugService);
+  //const createService = createServiceFactory(BugService);
+  const createService = createServiceFactory({
+    service: BugService,
+    imports: [HttpClientTestingModule,LoggerTestingModule],
+    mocks: [BugDataService],
+  });
 
   const createFakeBugModel = (): Bug => {
     let bug = {
@@ -32,21 +38,21 @@ describe('BugService', () => {
     return bug;
   }
 
-  const createFakeBugArray = (): Observable<Bug[]> => {
+  const createFakeBugArray = (): Bug[] => {
     let counter = 5;
     let bugArray: Bug[] = [];
     for(let i =0;i<counter;i++){
         bugArray.push(createFakeBugModel());
     }
-    return of(bugArray);
+    return bugArray;
   }
 
   beforeEach(() => {
     data = createFakeBugArray(),
     spectator = createService(),
     service = spectator.service;
-    testState =spectator.service.getState()
-    mockDataService = spectator.inject(BugDataService); // incorrect, Hannah says it might not work
+    testState = spectator.service.getState()
+    mockDataService = spectator.inject(BugDataService);
   });
 
   it('should be created', () => { // failed
@@ -57,42 +63,20 @@ describe('BugService', () => {
    *  Testing getBugsData() method
    */
   describe('getBugsData()', () => {
-    
-    it("should get the bug data into the state", () => { // failed
-      mockDataService.getBugs();
+    it("should get the bug data into the state", () => {
+      mockDataService.getBugs.and.returnValue(of(data))
       spectator.service.getBugsData()
       testState = spectator.service.getState();
 
       expect(testState).not.toBeEmpty;
-    });
-    
-    it("should get bug data from API ", () => { // failed
-      spectator.inject(BugService).getBugsData.and.returnValue(data);
-      spectator.service.getBugsData()
-      const expect = of(data);
-
-      spectator.service.getBugsData();
-      testState = spectator.service.getState();
-
-      const actual = testState;// observable
-
-      //compare both observables
-      
-
-
-      /*
-      actual.subscribe((bug) =>{
-        expect(bug).toEqual
-      })
-      expect(expect).toEqual(actual);*/
+      expect(mockDataService.getBugs).toHaveBeenCalledTimes(1);
     });
   })
-  /*
+  
   describe("findBug()", ()=>{
-    data =: Observable<Bug[]>;
     data = createFakeBugArray();
 
-    it("should find the bug being selected and display in the template", () => {
+    it("should find the bug", () => {
       // Setup
       let chosenBug: Bug;
       let bugName: string;
@@ -101,8 +85,9 @@ describe('BugService', () => {
       expect(data).toHaveData;
 
       // Add bug array to state
-      testState = new BehaviorSubject<any>(of(bugArray));
+      testState = new BehaviorSubject<Bug[]>(data);
 
+      /*
       // Select one bug to be selected and found by name
       bugName = bugArray[0].name;
       chosenBug = bugArray.find( f => f.name == bugName);
@@ -142,7 +127,7 @@ describe('BugService', () => {
       console.log("NameLabel3 Query actual element text: ", nameLabel.nativeElement.text);
       console.log("NameLabel3 Query actual element: ", nameLabel.nativeElement);
 
-      expect(nameLabel.nativeElement).toBeTruthy;
+      expect(nameLabel.nativeElement).toBeTruthy;*/
     });
-  })*/
+  })
 });
