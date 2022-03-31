@@ -1,0 +1,28 @@
+<div class="maincard">
+<mat-card>
+    <mat-card-header>
+        <mat-card-title> <div class="banner"><img src="assets/images/AnimalCrossingBanner.jpg"></div></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <p><label data-testid="name-label" for="name">Name: {{bug?.name}}</label></p>
+        <p><label data-testid="location-label" for="location">Location: {{bug?.location}}</label></p>
+        <p><label data-testid="time-label" for="time">Time: {{bug?.time}}</label></p>
+        <p><label data-testid="month-north-label" for="monthn">Months North: {{bug?.month?.north}}</label></p>
+        <p><label data-testid="month-south-label" for="months">Months South: {{bug?.month?.south}}</label></p> 
+        <p><label data-testid="caught-label" for="caught">Caught: 
+            <div *ngIf="bug?.caught === true">
+                <mat-checkbox [checked]="true" [disabled]="true"></mat-checkbox>
+                <b>You caught this one!</b>
+             </div>   
+             <div *ngIf="bug?.caught === false">
+              <mat-checkbox [checked]="false" [disabled]="true"></mat-checkbox>
+                <b>Keep looking!</b>
+             </div>
+            <input type="checkbox" *ngIf>
+        </label></p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="backClick()"  routerLink="/bugs">Back to list</button>
+    </mat-card-actions>
+</mat-card>
+</div>
