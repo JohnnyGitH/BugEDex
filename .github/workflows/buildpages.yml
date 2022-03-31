@@ -12,13 +12,7 @@ jobs:
         run: |
           npm ci
           npm run build
-
-     # - name: Deploy
-     #  uses: JamesIves/github-pages-deploy-action@v4.2.5
-     #   with:
-     #     branch: gh-pages # The branch the action should deploy to.
-     #     folder: . # The folder the action should deploy.
-     #     name: Build and Deploy
+          
       - name: Checkout for pages
         uses: actions/checkout@v3
 
