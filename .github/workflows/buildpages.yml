@@ -19,6 +19,8 @@ jobs:
      #     branch: gh-pages # The branch the action should deploy to.
      #     folder: . # The folder the action should deploy.
      #     name: Build and Deploy
+      - name: Checkout for pages
+        uses: actions/checkout@v3
 
       - name: Deploy to Github Pages
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.2 ## replace by latest version without it you will see Expected format {org}/{repo}[/path]@ref. Actual 'AhsanAyaz/angular-deploy-gh-pages-actions',Input string was not in a correct format.
