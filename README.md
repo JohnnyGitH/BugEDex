@@ -106,9 +106,8 @@ typescript                      4.5.4
 - [x] Fix config service to data service
 - [x] Fix tests broken by these config / data service changes
 - [x] GITHUB ACTION *** Publish to GithubPage
-
-## New Requirements
-- Adding a Dev Container to this project. Dev Container. VS Code Dev container.
+- [X] Using Dev container in VS Code
+- [] Testing More - Reading Karma Jasmine + spectator
 
 ## FUTURE
 - Backend Service. GO -> data persistence - no removing
