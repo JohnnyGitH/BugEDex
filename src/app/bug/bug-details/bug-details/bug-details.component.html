@@ -1,7 +1,7 @@
 <div class="maincard">
 <mat-card>
     <mat-card-header>
-        <mat-card-title> <div class="banner"><img src="assets/images/AnimalCrossingBanner.jpg"></div></mat-card-title>
+        <mat-card-title> <div class="banner"><img src="assets/images/AnimalCrossingBanner.jpg" alt="BugEDex Banner"></div></mat-card-title>
     </mat-card-header>
     <mat-card-content>
         <p><label data-testid="name-label" for="name">Name: {{bug?.name}}</label></p>
@@ -12,11 +12,11 @@
         <p><label data-testid="caught-label" for="caught">Caught: 
             <div *ngIf="bug?.caught === true">
                 <mat-checkbox [checked]="true" [disabled]="true"></mat-checkbox>
-                <b>You caught this one!</b>
+                <strong>You caught this one!</strong>
              </div>   
              <div *ngIf="bug?.caught === false">
               <mat-checkbox [checked]="false" [disabled]="true"></mat-checkbox>
-                <b>Keep looking!</b>
+                <strong>Keep looking!</strong>
              </div>
             <input type="checkbox" *ngIf>
         </label></p>
