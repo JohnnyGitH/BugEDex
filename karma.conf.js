@@ -25,10 +25,10 @@ module.exports = function (config) {
       suppressAll: true // removes the duplicated traces
     },
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/bugedex'),
+      dir: require('path').join(__dirname, './coverage/lcov'),
       subdir: '.',
       reporters: [
-        { type: 'html' },
+        { type: 'info' },
         { type: 'text-summary' }
       ]
     },
