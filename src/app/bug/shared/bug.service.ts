@@ -33,7 +33,7 @@ export class BugService {
       this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
       this.dataService.getBugs()
         .subscribe( (b) =>  { 
-          console.log(" bugService:getBugs B : ",b);
+          console.log(" bugService:getBugs B : ",b); // YOU
         this.state.next(
         b.filter( bug => bug.time == "All day")
         .map( (dto) =>
@@ -104,7 +104,7 @@ export class BugService {
  * returns a boolean
  * @returns boolean true if state has data
  */
-  checkBugsLoaded(): boolean {
+  checkBugsLoaded(): boolean { // LOOK TO OPTYMIZE
     this.loaded = this.state.getValue().length;
     this.logger.debug("checkBug : Are they loaded?:"+ this.loaded);
     if(this.loaded > 0){

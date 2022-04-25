@@ -32,7 +32,7 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.bugService.getBugsData();
-    this.logger.debug("ngOnInit bug-component")
+    this.logger.debug("ngOnInit bug-component") 
     this.loadBugs();
   }
 
