@@ -1,7 +1,8 @@
 
-<div class="banner"><img src="assets/images/AnimalCrossingBanner.jpg"></div>
+<div class="banner"><img src="assets/images/AnimalCrossingBanner.jpg" alt="BugEDex Banner"></div>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<!-- Table to display the bugs -->
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
@@ -49,11 +50,11 @@
         Is It caught?: {{bug.caught}}
         <div *ngIf="bug.caught === true">
           <mat-checkbox [checked]="true"></mat-checkbox>
-          <b>True</b>
+          <strong>True</strong>
        </div>   
        <div *ngIf="bug.caught === false">
         <mat-checkbox [checked]="false"></mat-checkbox>
-          <b>False</b>
+          <strong>False</strong>
        </div>
       </td>
     </ng-container>

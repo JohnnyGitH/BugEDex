@@ -1,4 +1,4 @@
-name: workflow name
+name: Building and Testing BugEDex
 
 on: [push]
 
@@ -17,5 +17,5 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build:ci
-      #- name: Test
-      #  run: npm run test:ci
+      - name: Test
+        run: npm run test:ci

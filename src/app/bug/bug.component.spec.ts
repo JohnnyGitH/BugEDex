@@ -68,6 +68,7 @@ describe('BugComponent', () => {
 
   /**
    * Testing the loadBugs() method
+   * 
    */
   describe("loadBugs()", () => {
     let bArray: Bug[] = [];
@@ -75,22 +76,12 @@ describe('BugComponent', () => {
     bug = createFakeBugModel();
     bArray.push(bug);
   
-    it('should load bugs from state into the dataSource', () =>{ // not testing properly
-      testState = new BehaviorSubject<any>(of(bArray));
+    it('should load bugs from state into the dataSource', () =>{ 
+      testState = new BehaviorSubject<any>(bArray);
       bugService.getState.andReturn(testState);
       spectator.component.loadBugs();
-      //console.log("datasource :" + component.dataSource.values)
+
       expect(component.dataSource).not.toBeEmpty();
-      //console.log("datasource length: " + spectator.component.dataSource.length)
-      /*for(let i=0;i<2;i++){
-        console.log("datasource.name: " + spectator.component.dataSource[i].name)
-      }*/
-      //console.log("datasource: " + spectator.component.dataSource.)
-      /*expect(spectator.component.dataSource[0].name).toEqual(bArray[0].name)
-      expect(spectator.component.dataSource[0].price).toEqual(bArray[0].price)
-      expect(spectator.component.dataSource[0].location).toEqual(bArray[0].location)
-      expect(spectator.component.dataSource[0].month).toEqual(bArray[0].month)*/
-      //expect(spectator.component.dataSource.values.length).toEqual(bArray.length)
     });
   })
 

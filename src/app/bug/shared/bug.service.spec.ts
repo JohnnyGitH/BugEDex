@@ -67,6 +67,11 @@ describe('BugService', () => {
       mockDataService.getBugs.and.returnValue(of(data))
       spectator.service.getBugsData()
       testState = spectator.service.getState();
+      // Setup looks good but rest needs more
+      // async issues, dealing Done()
+      // DEMO ANGULAR - Hannah Tyler project
+      // Hannahs recommendation
+      // 
 
       expect(testState).not.toBeEmpty;
       expect(mockDataService.getBugs).toHaveBeenCalledTimes(1);
