@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, take } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
 import { NGXLogger} from "ngx-logger";
@@ -25,15 +25,13 @@ export class BugService {
  * Service needs to filter by All Day
  * Service needs to assign false to caught property
  */
-  getBugsData() {   
-    //let test = this.checkBugsLoaded();
-    //this.logger.debug(test)
+  getBugsData() {
     if(!this.checkBugsLoaded())
     {
       this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
       this.dataService.getBugs()
         .subscribe( (b) =>  { 
-          console.log(" bugService:getBugs B : ",b); // YOU
+          this.logger.debug(" bugService:getBugs B : ",b);
         this.state.next(
         b.filter( bug => bug.time == "All day")
         .map( (dto) =>
@@ -51,7 +49,6 @@ export class BugService {
       );
     }
     this.logger.debug("Skipped getBugs() call");
-    // do nothing if bugs are already loaded
   }
 
 /**

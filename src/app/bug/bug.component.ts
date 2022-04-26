@@ -71,6 +71,7 @@ export class BugComponent implements OnInit {
     this.loadBugs();
   }
 
+  // Testing for Code coverage
   dumbMethod(thing: string):string{
     return thing;
   }
