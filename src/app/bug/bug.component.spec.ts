@@ -138,4 +138,15 @@ describe('BugComponent', () => {
         expect(routerMock.navigate).toHaveBeenCalledWith(['/bug'], {queryParams: ({ name: queryName}) } );
     })
   })
+
+  describe("dumbMethod()", () => {
+    it("Should return the word test", () => {
+      let testString = "test";
+      let actual: string;
+
+      actual = spectator.component.dumbMethod(testString);
+
+      expect(actual).toEqual(testString);
+    } )
+  })
 });
