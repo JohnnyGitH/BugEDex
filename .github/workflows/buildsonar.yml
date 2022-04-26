@@ -2,7 +2,8 @@ name: Building and Code coverage of BugEDex
 
 on: 
   pull_request:
-    -closed
+    types:
+      - opened
 
 jobs:
   build-and-deploy:
