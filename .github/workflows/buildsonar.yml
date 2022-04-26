@@ -1,6 +1,10 @@
 name: Building and Code coverage of BugEDex
 
 on: 
+  push: 
+    branches:
+      - BD-FinalTestingWork
+
   pull_request:
     types:
       - opened
