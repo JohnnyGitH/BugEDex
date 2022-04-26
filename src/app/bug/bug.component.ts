@@ -70,4 +70,8 @@ export class BugComponent implements OnInit {
     this.bugService.checkBugCaught(bugName);
     this.loadBugs();
   }
+
+  dumbMethod():string{
+    return "test";
+  }
 }
