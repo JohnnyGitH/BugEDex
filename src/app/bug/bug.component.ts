@@ -34,7 +34,6 @@ export class BugComponent implements OnInit {
     this.bugService.getBugsData();
     this.logger.debug("ngOnInit bug-component") 
     this.loadBugs();
-    this.stupidmethod();
   }
 
   /**
@@ -70,9 +69,5 @@ export class BugComponent implements OnInit {
     this.logger.debug("checkBugCaught() bug-component  bugName: "+ bugName);
     this.bugService.checkBugCaught(bugName);
     this.loadBugs();
-  }
-
-  stupidmethod(): string{
-    return "this"
   }
 }
