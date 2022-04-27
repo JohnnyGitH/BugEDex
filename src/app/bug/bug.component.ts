@@ -32,17 +32,17 @@ export class BugComponent implements OnInit {
    */
   ngOnInit(): void {
     this.bugService.getBugsData();
-    this.logger.debug("ngOnInit bug-component") 
+    this.logger.debug("ngOnInit bug-component")
     this.loadBugs();
   }
 
   /**
-   * Loading the bugs into the table data source 
+   * Loading the bugs into the table data source
    * to populate table in the template
    */
   loadBugs() {
     this.logger.debug("loadBugs() bug-component")
-    this.bugService.getState().subscribe( data => { 
+    this.bugService.getState().subscribe( data => {
         this.logger.debug("Data length is :"+data.length)
         this.logger.debug("Data values is :"+data.values)
         this.dataSource = data;

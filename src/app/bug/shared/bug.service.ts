@@ -28,9 +28,9 @@ export class BugService {
   getBugsData() {
     if(!this.checkBugsLoaded())
     {
-      this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
+      this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()");
       this.dataService.getBugs()
-        .subscribe( (b) =>  { 
+        .subscribe( (b) =>  {
           this.logger.debug(" bugService:getBugs B : ",b);
         this.state.next(
         b.filter( bug => bug.time == "All day")
@@ -51,7 +51,7 @@ export class BugService {
     this.logger.debug("Skipped getBugs() call");
   }
 
-/**
+ /**
  * This method finds the bug being selected for
  * checkmark, and updates the caught property
  * @param bugName name of bug selected
@@ -88,10 +88,10 @@ export class BugService {
       }
 
 
-  /**
-   * Get the state and return the value
-   * @returns an observable array of bugs
-   */
+ /**
+ * Get the state and return the value
+ * @returns an observable array of bugs
+ */
   getState(): Observable<Bug[]> {
     return this.state.asObservable();
   }
