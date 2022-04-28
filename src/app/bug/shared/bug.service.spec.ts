@@ -27,7 +27,7 @@ describe('BugService', () => {
     let bug = {
       name: faker.random.word(),
       location: faker.random.word(),
-      time: faker.random.word(),
+      time: "All day",
       price: faker.datatype.number(5),
       month:{
         north: [],
@@ -74,26 +74,27 @@ describe('BugService', () => {
     });
   })
 
-  describe("findBug()", ()=>{
+  describe("findBug()", () => {
     data = createFakeBugArray();
 
     it("should find the bug", () => {
       // Setup
-      //let chosenBug: Bug;
-      //let bugName: string;
-      // Make sure Array has bugs
-      //expect(data).toHaveData;
-      // Add bug array to state
-      //testState = new BehaviorSubject<Bug[]>(data);
+      let actualBug: Bug;
+
       let index = faker.datatype.number(5);
       let expectedBug = data[index];
 
       mockDataService.getBugs.and.returnValue(of(data));
-      let actualBug = spectator.service.findBug(expectedBug.name);
+      service.getBugs = true;
+      service.getBugsData();
+      actualBug = spectator.service.findBug(expectedBug.name);
 
-      expect(actualBug.name).toEqual(expectedBug.name);
-      expect(actualBug.location).toEqual(expectedBug.location);
-      expect(actualBug.price).toEqual(expectedBug.price);
+      expect(actualBug).toEqual(expectedBug);
     });
   })
 });
+// when stable, or spy on state property of service.
+// JS way, I can access the property even private. Service to Anytype.
+// Set the state property to any.
+// new. or return observable, completes when update state
+// spectator fixture when stable

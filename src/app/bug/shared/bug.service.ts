@@ -17,6 +17,7 @@ export class BugService {
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
   loaded: number;
+  getBugs: boolean;
 
   constructor(private dataService: BugDataService,private logger: NGXLogger) { }
 
@@ -26,7 +27,8 @@ export class BugService {
  * Service needs to assign false to caught property
  */
   getBugsData() {
-    if(!this.checkBugsLoaded())
+    this.getBugs = this.checkBugsLoaded();
+    if(!this.getBugs)
     {
       this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()");
       this.dataService.getBugs()
@@ -101,14 +103,15 @@ export class BugService {
  * returns a boolean
  * @returns boolean true if state has data
  */
-  checkBugsLoaded(): boolean { // LOOK TO OPTYMIZE
+  checkBugsLoaded(): boolean {
     this.loaded = this.state.getValue().length;
     this.logger.debug("checkBug : Are they loaded?:"+ this.loaded);
-    if(this.loaded > 0){
+    return this.state.getValue().length>0? true: false;
+    /*if(this.loaded > 0){
       this.logger.debug("checkBug: Yes, True");
       return true;
     }
     this.logger.debug("checkBug: No, False");
-    return false;
+    return false;*/
   }
 }
