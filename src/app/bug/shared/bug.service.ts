@@ -12,7 +12,6 @@ import { NGXLogger} from "ngx-logger";
  * This service uses the data service to get the bug data
  */
 export class BugService {
-  // Private state working as persistence
   private state:BehaviorSubject<Bug[]> =  new BehaviorSubject<Bug[]>([]);
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
@@ -100,18 +99,12 @@ export class BugService {
 
  /**
  * This method checks the state and
- * returns a boolean
+ * returns a boolean. Optimize
  * @returns boolean true if state has data
  */
   checkBugsLoaded(): boolean {
     this.loaded = this.state.getValue().length;
     this.logger.debug("checkBug : Are they loaded?:"+ this.loaded);
     return this.state.getValue().length>0? true: false;
-    /*if(this.loaded > 0){
-      this.logger.debug("checkBug: Yes, True");
-      return true;
-    }
-    this.logger.debug("checkBug: No, False");
-    return false;*/
   }
 }

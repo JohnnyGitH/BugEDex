@@ -4,7 +4,7 @@ import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
@@ -15,8 +15,6 @@ describe('BugService', () => {
   let data: Bug[];
   let testState: Observable<Bug[]>;
 
-  // Understand createHTTPFactory - not appropriate. createServiceFactor
-  //const createService = createServiceFactory(BugService);
   const createService = createServiceFactory({
     service: BugService,
     imports: [HttpClientTestingModule,LoggerTestingModule],
@@ -55,7 +53,7 @@ describe('BugService', () => {
     mockDataService = spectator.inject(BugDataService);
   });
 
-  it('should be created', () => { // failed
+  it('should be created', () => {
     expect(spectator.service).toBeTruthy();
   });
 
@@ -64,12 +62,14 @@ describe('BugService', () => {
    */
   describe('getBugsData()', () => {
     it("should get the bug data into the state", done => {
+      // Arrange
       mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
       spectator.service.getBugsData();
-      testState = spectator.service.getState();
-
-      expect(testState).not.toBeEmpty;
-      expect(mockDataService.getBugs).toHaveBeenCalledTimes(1);
+      // Act
+      let actualState = spectator.service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeTruthy;
       done();
     });
   })
@@ -77,24 +77,20 @@ describe('BugService', () => {
   describe("findBug()", () => {
     data = createFakeBugArray();
 
-    it("should find the bug", () => {
-      // Setup
+    it("should find the bug", done => {
+      // Arrange
       let actualBug: Bug;
-
       let index = faker.datatype.number(5);
       let expectedBug = data[index];
-
+      // Act
       mockDataService.getBugs.and.returnValue(of(data));
       service.getBugs = true;
       service.getBugsData();
       actualBug = spectator.service.findBug(expectedBug.name);
-
+      // Assert
       expect(actualBug).toEqual(expectedBug);
+      done();
     });
   })
 });
-// when stable, or spy on state property of service.
-// JS way, I can access the property even private. Service to Anytype.
-// Set the state property to any.
-// new. or return observable, completes when update state
-// spectator fixture when stable
+

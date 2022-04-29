@@ -27,32 +27,6 @@ describe('BugDetailsComponent', () => {
       mocks: [ BugService ]
     });
 
-  // Creating a fake bug model
-  const createFakeBugModel = (): Bug => {
-    return {
-      name: faker.random.alphaNumeric(10),
-      location: "location",
-      time: "time",
-      price: 1,
-      month:{
-        north:[],
-        south:[]
-      } as Month,
-      caught: false
-    }
-  }
-
-  // Creating a fake bug array
-  const createFakeBugArray = (): Bug[] => {
-    let counter = 5;
-    
-
-    for(let i = 0; i < counter; i++){
-      bugArray.push(createFakeBugModel());
-    }
-    return bugArray;
-  }
-
   beforeEach( () => {
     spectator = createComponent();
     component = spectator.component;
@@ -60,7 +34,14 @@ describe('BugDetailsComponent', () => {
     testState = new BehaviorSubject<any>([]);
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(spectator.component).toBeTruthy();
-  });  
+  });
+
+  describe("backClick()", () => {
+
+    it("should navigate to the /bugs page", () => {
+      // TODO
+    })
+  })
 });
