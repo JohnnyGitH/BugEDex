@@ -1,24 +1,24 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.231.2/containers/typescript-node
 {
-	"name": "Node.js & TypeScript",
+	"name": "Node.js & TypeScript", // A name for the devcontainer displayed in the UI
 	"build": {
-		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick a Node version: 16, 14, 12.
-		// Append -bullseye or -buster to pin to an OS version.
-		// Use -bullseye variants on local on arm64/Apple Silicon.
-		"args": { 
-			"VARIANT": "16-bullseye"
+		"dockerfile": "Dockerfile", // The location of a Dockerfile that defines the contents of the container. Relative to devcontainer.json
+		"args": {   // Set of name-value with Docker image build arguments, passed when building a dockerfile.
+			"VARIANT": "16-bullseye" // Version of NODE
 		}
 	},
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": {},
+	"settings": {}, // Adds defailt settings.json values into a contianer/machine specific settings file. Defaults to {}
 
 
 	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [
-		"dbaeumer.vscode-eslint"
+	"extensions": [ // An array of extension IDS that specify the extensions that should be installed inside container when created
+		"dbaeumer.vscode-eslint",
+    "msjsdiag.debugger-for-chrome",
+    "johnpapa.angular-essentials", // Angular essentials extension
+
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -28,5 +28,7 @@
 	// "postCreateCommand": "yarn install",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	"remoteUser": "node"
+	"remoteUser": "node" // Overrides the user that VS Code and other devcontainer.json supporting services/tools/ runs as in the container
+  // (along with subprocesses like terminals, tasks, or debugging). Does not change the the user container as a whole runs as which can be set using
+  // containerUser for images and Dockerfiles or in your docker Compose file instead. Defaults to the user the container as a whole is running as
 }
