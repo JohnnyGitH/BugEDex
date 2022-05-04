@@ -73,8 +73,6 @@ describe('BugComponent', () => {
     service = spectator.inject(BugService,fromComponentInjector);
     routerMock = spectator.inject(Router);
     mockDataService = spectator.inject(BugDataService);
-
-
   });
 
   it('should be created', () => {
@@ -83,10 +81,8 @@ describe('BugComponent', () => {
 
   /**
    * Testing the loadBugs() method
-   *
    */
   describe("loadBugs()", () => {
-
     it('should load bugs from state into the dataSource', done =>{
       // Arrange
       mockDataService.getBugs.and.returnValue(of(data));
@@ -101,44 +97,37 @@ describe('BugComponent', () => {
     });
   })
 
-  /**
-   * Testing the checkBugCaught() method
-   */
-  describe("checkBugCaught()", ()=>{
-    it("should find the bug being selected and update the caught property", done => {
-      // Arrange
-      let index = faker.datatype.number(5);
-      let expectedBug = data[index];
-      let bugName = expectedBug.name;
 
-      // Act
-      mockDataService.getBugs.and.returnValue(of(data));
-      service.getState.and.returnValue(of(data));
-      service.getBugs = true;
-      service.getBugsData();
-      service.checkBugCaught();
-      spectator.component.checkBugCaught(bugName);
-      component.loadBugs();
-      let actualBug = service.getState().subscribe(bug => {
-        bug.find(findBug => findBug.name == bugName)
-      });
-      expect(expectedBug.caught).toBeFalse();
-      //expect(actualBug.caught).toBeTrue();
-      done();
-    });
-  })
 
   /**
    * Testing the bugClick() method
    */
   describe("bugClick()", () => {
-
     it("should navigate to the /bug page with the name of selected bug", () => {
+        // Arrange
         let bugName = queryName;
+        // Act
         spectator.component.bugClick(bugName);
-
+        // Assert
         expect(routerMock.navigate).toHaveBeenCalledTimes(1);
         expect(routerMock.navigate).toHaveBeenCalledWith(['/bug'], {queryParams: ({ name: queryName}) } );
     })
   })
+
+   /**
+   * Testing the checkBugCaught() method
+   */
+     describe("checkBugCaught()", ()=>{
+      it("should find the bug being selected and update the caught property", done => {
+        // Arrange
+        let bugName = faker.random.word();
+        // Act
+        service.getState.and.returnValue(of(data));
+        spectator.component.checkBugCaught(bugName);
+        // Assert
+        expect(service.checkBugCaught).toHaveBeenCalledTimes(1);
+        expect(service.checkBugCaught).toHaveBeenCalledWith(bugName);
+        done();
+      });
+    })
 });

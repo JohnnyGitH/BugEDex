@@ -88,7 +88,6 @@ export class BugService {
                         }
       }
 
-
  /**
  * Get the state and return the value
  * @returns an observable array of bugs

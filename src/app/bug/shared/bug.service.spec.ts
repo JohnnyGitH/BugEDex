@@ -4,7 +4,7 @@ import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
@@ -13,7 +13,6 @@ describe('BugService', () => {
   let service: BugService;
   let mockDataService: SpyObject<BugDataService>;
   let data: Bug[];
-  let testState: Observable<Bug[]>;
 
   const createService = createServiceFactory({
     service: BugService,
@@ -49,7 +48,6 @@ describe('BugService', () => {
     data = createFakeBugArray(),
     spectator = createService(),
     service = spectator.service;
-    testState = spectator.service.getState();
     mockDataService = spectator.inject(BugDataService);
   });
 
@@ -74,7 +72,15 @@ describe('BugService', () => {
     });
   })
 
-  describe("findBug()", () => {
+  describe("checkBugCaught()", () => {
+    data = createFakeBugArray();
+
+    it("should find the bug", () => {
+      // TODO
+    });
+  })
+
+  describe("findBug()", () => { // Inconsistent
     data = createFakeBugArray();
 
     it("should find the bug", done => {
@@ -90,6 +96,25 @@ describe('BugService', () => {
       // Assert
       expect(actualBug).toEqual(expectedBug);
       done();
+    });
+  })
+
+  describe("getState()", () => {
+    data = createFakeBugArray();
+
+    it("should return the current value of the state", () => {
+      // TODO
+    });
+  })
+
+  describe("checkBugsLoaded()", () => {
+    data = createFakeBugArray();
+
+    it("should check if the state has value, if it does, return true", () => {
+      // TODO
+    });
+    it("should check if the state has value, if it doesn't, return false", () => {
+      // TODO
     });
   })
 });
