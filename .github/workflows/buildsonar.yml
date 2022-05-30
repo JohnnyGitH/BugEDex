@@ -1,9 +1,9 @@
 name: Building and Code coverage of BugEDex
 
-on: [push]
-  #pull_request:
-   # types:
-    #  - opened
+on:
+  pull_request:
+    types:
+      - closed
 
 jobs:
   build-and-deploy:
@@ -22,7 +22,12 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        
+      - name: Generate Report
+        run: npm run test:ci
+
+      - name: Coverage File
+        run: cat coverage/bugedex/lcov.info
+
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
         env:

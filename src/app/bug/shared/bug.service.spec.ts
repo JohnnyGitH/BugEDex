@@ -4,7 +4,7 @@ import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
@@ -13,10 +13,7 @@ describe('BugService', () => {
   let service: BugService;
   let mockDataService: SpyObject<BugDataService>;
   let data: Bug[];
-  let testState: Observable<Bug[]>;
 
-  // Understand createHTTPFactory - not appropriate. createServiceFactor
-  //const createService = createServiceFactory(BugService);
   const createService = createServiceFactory({
     service: BugService,
     imports: [HttpClientTestingModule,LoggerTestingModule],
@@ -27,7 +24,7 @@ describe('BugService', () => {
     let bug = {
       name: faker.random.word(),
       location: faker.random.word(),
-      time: faker.random.word(),
+      time: "All day",
       price: faker.datatype.number(5),
       month:{
         north: [],
@@ -51,88 +48,125 @@ describe('BugService', () => {
     data = createFakeBugArray(),
     spectator = createService(),
     service = spectator.service;
-    testState = spectator.service.getState()
     mockDataService = spectator.inject(BugDataService);
   });
 
-  it('should be created', () => { // failed
+  it('should be created', () => {
     expect(spectator.service).toBeTruthy();
   });
 
   /**
    *  Testing getBugsData() method
    */
-  describe('getBugsData()', () => {
-    it("should get the bug data into the state", () => {
-      mockDataService.getBugs.and.returnValue(of(data))
-      spectator.service.getBugsData()
-      testState = spectator.service.getState();
-      // Setup looks good but rest needs more
-      // async issues, dealing Done()
-      // DEMO ANGULAR - Hannah Tyler project
-      // Hannahs recommendation
-      // 
-
-      expect(testState).not.toBeEmpty;
-      expect(mockDataService.getBugs).toHaveBeenCalledTimes(1);
+  describe('getBugsData()', () => { // NO EXPECTATION
+    it("should get the bug data into the state", (done) => {
+      // Arrange
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      spectator.service.getBugsData();
+      // Act
+      let actualState = spectator.service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeTruthy;
+      done();
     });
   })
-  
-  describe("findBug()", ()=>{
+
+  /**
+   * Testing the checkBugCaught() method
+   */
+  describe("checkBugCaught()", () => { // Inconsistent // Work on THIS
     data = createFakeBugArray();
+    it("should find the bug", (done) => {
+      // Arrange
+      let index = faker.datatype.number(5);
+      let expectedBug = data[index];
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugsData();
+      service.checkBugCaught(expectedBug.name);
+      // Assert
+      service.getState().subscribe(b =>{
+        b.find( bug => {
+          if(bug.name === expectedBug.name){
+            expect(bug.caught).toBeTruthy();
+          }
+        })
+      })
+      done();
+    });
+  })
 
-    it("should find the bug", () => {
-      // Setup
-      let chosenBug: Bug;
-      let bugName: string;
-      
-      // Make sure Array has bugs
-      expect(data).toHaveData;
+  /**
+   * Testing the findBug() method
+   */
+  describe("findBug()", () => { // Inconsistent
+    data = createFakeBugArray();
+    it("should find the bug", done => {
+      // Arrange
+      let actualBug: Bug;
+      let index = faker.datatype.number(5);
+      let expectedBug = data[index];
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      actualBug = spectator.service.findBug(expectedBug.name);
+      // Assert
+      expect(actualBug).toEqual(expectedBug);
+      done();
+    });
+  })
 
-      // Add bug array to state
-      testState = new BehaviorSubject<Bug[]>(data);
+  /**
+   * Testing the getState() method
+   */
+  describe("getState()", () => { // NO EXPECTATION
+    data = createFakeBugArray();
+    it("should return the current value of the state", (done) => {
+      // Arrange
+      let actualState: Observable<Bug[]>;
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      actualState = service.getState();
+      // Assert
+      expect(actualState).toBeTruthy();
+      done();
+    });
+  })
 
-      /*
-      // Select one bug to be selected and found by name
-      bugName = bugArray[0].name;
-      chosenBug = bugArray.find( f => f.name == bugName);
-      console.log("Bug name is: "+bugName+" and chosen bug is: "+ chosenBug.name);
-
-      // Call findBug()
-      data = spectator.service.findBug(bugName);
-
-      // test properties
-      console.log(spectator.service.bug.name);
-      console.log(spectator.service.bug.caught);
-
-      // DETECT CHANGES ---- here
-      //spectator.detectChanges(); // dies here
-
-      console.log(spectator.service.bug.name);
-      console.log(spectator.service.bug.caught);
-
-      // find the bug being selected
-      expect(spectator.service.bug.name).toEqual(bugName); // bug?.name
-
-      // UI label element - LOOK INTO IT
-      const nameLabel = spectator.fixture.debugElement.query(By.css('label[data-testid="name-label"]')); // access native elements to access data inside the label
-
-      // label
-      console.log("NameLabel3 Querying name label: ", nameLabel.name);
-
-      // p
-      console.log("NameLabel3 Query parent name: ", nameLabel.parent.name);
-
-      //<label _ngcontent-a-c17="" data-testid="name-label" for="name"></label>
-      console.log("NameLabel3 Query actual element inner text: ", nameLabel.nativeElement.innerText);
-      console.log("NameLabel3 Query actual element inner html: ", nameLabel.nativeElement.innerHTML);
-      console.log("NameLabel3 Query actual element text content: ", nameLabel.nativeElement.textContents);
-      console.log("NameLabel3 Query actual element outer text: ", nameLabel.nativeElement.outerText);
-      console.log("NameLabel3 Query actual element label: ", nameLabel.nativeElement.label);
-      console.log("NameLabel3 Query actual element text: ", nameLabel.nativeElement.text);
-      console.log("NameLabel3 Query actual element: ", nameLabel.nativeElement);
-
-      expect(nameLabel.nativeElement).toBeTruthy;*/
+  /**
+   * Testing the checkBugsLoaded() method
+   */
+  describe("checkBugsLoaded()", () => {
+    data = createFakeBugArray();
+    it("should check if the state has value, if it does, return true", done => {
+      // Arrange
+      let actualState: boolean;
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      actualState = service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeTruthy();
+      done();
+    });
+    it("should check if the state has value, if it doesn't, return false", done => {
+      // Arrange
+      let actualState: boolean;
+      let invalidArray: Bug[];
+      // Act
+      mockDataService.getBugs.and.returnValue(of(invalidArray));
+      service.getBugs = true;
+      //service.getBugsData();
+      actualState = service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeFalsy();
+      done();
     });
   })
 });
+

@@ -5,36 +5,40 @@ import { BugComponent } from './bug.component';
 import { BugService } from './shared/bug.service';
 import { Month } from './shared/models/month.model';
 import { Bug } from './shared/models/bug.model';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 import * as faker from 'faker';
+import { BugDataService } from './shared/bug-data.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BugComponent', () => {
   let spectator: Spectator<BugComponent>;
   let component: BugComponent;
-  let bugService: SpyObject<BugService>;
+  let service: SpyObject<BugService>;
   let routerMock: SpyObject<Router>;
   let queryName = faker.random.word();
-  let testState: BehaviorSubject<Observable<Bug[]>>;
+  let mockDataService: SpyObject<BugDataService>;
+  let data: Bug[];
 
   const createComponent = createComponentFactory({
       component: BugComponent,
       imports:[
            RouterTestingModule.withRoutes([{ path: '', component: BugComponent }]),
            LoggerTestingModule,
+           HttpClientTestingModule
       ],
       providers:[
         {
-          //providers: [ { provide: BugService, useValue: bugService } ],
-          provide: ActivatedRoute, // better way
-          useValue: { "bug?name=" :  queryName  } 
-        }
+          provide: ActivatedRoute,
+          useValue: { "bug?name=" :  queryName  }
+        },
+        HttpClientTestingModule
       ],
       detectChanges: false,
-      mocks:[ 
-        
+      mocks:[
+        BugDataService,
         BugService,
-        Router, 
+        Router,
       ]
   });
 
@@ -42,7 +46,7 @@ describe('BugComponent', () => {
     return {
       name: faker.random.word(),
       location: faker.random.word(),
-      time: faker.random.word(),
+      time: "All day",
       price: faker.datatype.number("min:1","max:10"),
       month:{
         north:[],
@@ -52,14 +56,23 @@ describe('BugComponent', () => {
     }
   }
 
+  const createFakeBugArray = (): Bug[] => {
+    let counter = 5;
+    let bugArray: Bug[] = [];
+    for(let i =0;i<counter;i++){
+        bugArray.push(createFakeBugModel());
+    }
+    return bugArray;
+  }
+
   beforeEach (() => {
+    data = createFakeBugArray();
     spectator = createComponent();
     component = spectator.component;
     const fromComponentInjector = true;
-    bugService = spectator.inject(BugService,fromComponentInjector);
-    testState = new BehaviorSubject<any>([]);
+    service = spectator.inject(BugService,fromComponentInjector);
     routerMock = spectator.inject(Router);
-
+    mockDataService = spectator.inject(BugDataService);
   });
 
   it('should be created', () => {
@@ -68,60 +81,19 @@ describe('BugComponent', () => {
 
   /**
    * Testing the loadBugs() method
-   * 
    */
   describe("loadBugs()", () => {
-    let bArray: Bug[] = [];
-    let bug: Bug;
-    bug = createFakeBugModel();
-    bArray.push(bug);
-  
-    it('should load bugs from state into the dataSource', () =>{ 
-      testState = new BehaviorSubject<any>(bArray);
-      bugService.getState.andReturn(testState);
+    it('should load bugs from state into the dataSource', done =>{
+      // Arrange
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getState.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      // Act
       spectator.component.loadBugs();
-
+      // Assert
       expect(component.dataSource).not.toBeEmpty();
-    });
-  })
-
-  /**
-   * Testing the checkBugCaught() method
-   */
-  describe("checkBugCaught()", ()=>{
-    let bArray: Bug[] = [];
-    let bug: Bug;
-    bug = createFakeBugModel();
-    bArray.push(bug);
-
-    it("should find the bug being selected and update the caught property", () => {
-      // Setup
-      let bugName = bug.name;
-      let foundBug: Bug;
-      foundBug = { caught: false, name: "", location: "", time: "", price: 1, month: {north: [],south: [],},};
-      let inputArrayBug: Bug;
-
-      // Make sure Array has bug
-      expect(bArray).toHaveData;
-
-      // Assignment
-      inputArrayBug = bArray[0];
-      foundBug.caught = inputArrayBug.caught;
-      foundBug.name = inputArrayBug.name;
-      testState = new BehaviorSubject<any>(of(bArray));
-      bugService.getState.andReturn(testState);
-
-      // Make sure foundbug name is correct and caught is false
-      expect(foundBug.name).toEqual(bugName);
-      expect(foundBug.caught).toBeFalsy;
-
-      // Call checkBugCaught()
-      spectator.component.checkBugCaught(bugName);
-      let afterArray = testState.getValue();
-      afterArray.subscribe( res => {
-
-        expect(res[0].caught).toBeTruthy;
-      })
+      done();
     });
   })
 
@@ -129,24 +101,31 @@ describe('BugComponent', () => {
    * Testing the bugClick() method
    */
   describe("bugClick()", () => {
-
     it("should navigate to the /bug page with the name of selected bug", () => {
-        let bugName = queryName
+        // Arrange
+        let bugName = queryName;
+        // Act
         spectator.component.bugClick(bugName);
-        
+        // Assert
         expect(routerMock.navigate).toHaveBeenCalledTimes(1);
         expect(routerMock.navigate).toHaveBeenCalledWith(['/bug'], {queryParams: ({ name: queryName}) } );
     })
   })
 
-  describe("dumbMethod()", () => {
-    it("Should return the word test", () => {
-      let testString = "test";
-      let actual: string;
-
-      actual = spectator.component.dumbMethod(testString);
-
-      expect(actual).toEqual(testString);
-    } )
-  })
+   /**
+   * Testing the checkBugCaught() method
+   */
+     describe("checkBugCaught()", ()=>{
+      it("should find the bug being selected and update the caught property", done => {
+        // Arrange
+        let bugName = faker.random.word();
+        // Act
+        service.getState.and.returnValue(of(data));
+        spectator.component.checkBugCaught(bugName);
+        // Assert
+        expect(service.checkBugCaught).toHaveBeenCalledTimes(1);
+        expect(service.checkBugCaught).toHaveBeenCalledWith(bugName);
+        done();
+      });
+    })
 });

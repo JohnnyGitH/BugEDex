@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of, take } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BugDataService } from './bug-data.service';
 import { Bug } from './models/bug.model';
 import { NGXLogger} from "ngx-logger";
@@ -12,11 +12,11 @@ import { NGXLogger} from "ngx-logger";
  * This service uses the data service to get the bug data
  */
 export class BugService {
-  // Private state working as persistence
   private state:BehaviorSubject<Bug[]> =  new BehaviorSubject<Bug[]>([]);
   data: Observable<Bug[]>;
   bug: Observable<Bug>;
   loaded: number;
+  getBugs: boolean;
 
   constructor(private dataService: BugDataService,private logger: NGXLogger) { }
 
@@ -25,15 +25,14 @@ export class BugService {
  * Service needs to filter by All Day
  * Service needs to assign false to caught property
  */
-  getBugsData() {   
-    //let test = this.checkBugsLoaded();
-    //this.logger.debug(test)
-    if(!this.checkBugsLoaded())
+  getBugsData() {
+    this.getBugs = this.checkBugsLoaded();
+    if(!this.getBugs)
     {
-      this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()"); 
+      this.logger.debug("Bug Service,CheckBugsLoaded is False, preparing for bug component, getBugs()");
       this.dataService.getBugs()
-        .subscribe( (b) =>  { 
-          console.log(" bugService:getBugs B : ",b); // YOU
+        .subscribe( (b) =>  {
+          this.logger.debug(" bugService:getBugs B : ",b);
         this.state.next(
         b.filter( bug => bug.time == "All day")
         .map( (dto) =>
@@ -51,10 +50,9 @@ export class BugService {
       );
     }
     this.logger.debug("Skipped getBugs() call");
-    // do nothing if bugs are already loaded
   }
 
-/**
+ /**
  * This method finds the bug being selected for
  * checkmark, and updates the caught property
  * @param bugName name of bug selected
@@ -90,28 +88,22 @@ export class BugService {
                         }
       }
 
-
-  /**
-   * Get the state and return the value
-   * @returns an observable array of bugs
-   */
+ /**
+ * Get the state and return the value
+ * @returns an observable array of bugs
+ */
   getState(): Observable<Bug[]> {
     return this.state.asObservable();
   }
 
  /**
  * This method checks the state and
- * returns a boolean
+ * returns a boolean. Optimize
  * @returns boolean true if state has data
  */
-  checkBugsLoaded(): boolean { // LOOK TO OPTYMIZE
+  checkBugsLoaded(): boolean {
     this.loaded = this.state.getValue().length;
     this.logger.debug("checkBug : Are they loaded?:"+ this.loaded);
-    if(this.loaded > 0){
-      this.logger.debug("checkBug: Yes, True");
-      return true;
-    }
-    this.logger.debug("checkBug: No, False");
-    return false;
+    return this.state.getValue().length>0? true: false;
   }
 }
