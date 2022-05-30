@@ -97,8 +97,6 @@ describe('BugComponent', () => {
     });
   })
 
-
-
   /**
    * Testing the bugClick() method
    */

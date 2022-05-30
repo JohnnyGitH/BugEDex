@@ -4,7 +4,7 @@ import { BugService } from './bug.service';
 import * as faker from "faker";
 import { Month } from "./models/month.model";
 import { Bug } from "./models/bug.model";
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoggerTestingModule } from 'ngx-logger/testing';
 
@@ -58,8 +58,8 @@ describe('BugService', () => {
   /**
    *  Testing getBugsData() method
    */
-  describe('getBugsData()', () => {
-    it("should get the bug data into the state", done => {
+  describe('getBugsData()', () => { // NO EXPECTATION
+    it("should get the bug data into the state", (done) => {
       // Arrange
       mockDataService.getBugs.and.returnValue(of(data));
       service.getBugs = true;
@@ -72,17 +72,36 @@ describe('BugService', () => {
     });
   })
 
-  describe("checkBugCaught()", () => {
+  /**
+   * Testing the checkBugCaught() method
+   */
+  describe("checkBugCaught()", () => { // Inconsistent // Work on THIS
     data = createFakeBugArray();
-
-    it("should find the bug", () => {
-      // TODO
+    it("should find the bug", (done) => {
+      // Arrange
+      let index = faker.datatype.number(5);
+      let expectedBug = data[index];
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugsData();
+      service.checkBugCaught(expectedBug.name);
+      // Assert
+      service.getState().subscribe(b =>{
+        b.find( bug => {
+          if(bug.name === expectedBug.name){
+            expect(bug.caught).toBeTruthy();
+          }
+        })
+      })
+      done();
     });
   })
 
+  /**
+   * Testing the findBug() method
+   */
   describe("findBug()", () => { // Inconsistent
     data = createFakeBugArray();
-
     it("should find the bug", done => {
       // Arrange
       let actualBug: Bug;
@@ -99,22 +118,54 @@ describe('BugService', () => {
     });
   })
 
-  describe("getState()", () => {
+  /**
+   * Testing the getState() method
+   */
+  describe("getState()", () => { // NO EXPECTATION
     data = createFakeBugArray();
-
-    it("should return the current value of the state", () => {
-      // TODO
+    it("should return the current value of the state", (done) => {
+      // Arrange
+      let actualState: Observable<Bug[]>;
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      actualState = service.getState();
+      // Assert
+      expect(actualState).toBeTruthy();
+      done();
     });
   })
 
+  /**
+   * Testing the checkBugsLoaded() method
+   */
   describe("checkBugsLoaded()", () => {
     data = createFakeBugArray();
-
-    it("should check if the state has value, if it does, return true", () => {
-      // TODO
+    it("should check if the state has value, if it does, return true", done => {
+      // Arrange
+      let actualState: boolean;
+      // Act
+      mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
+      service.getBugsData();
+      actualState = service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeTruthy();
+      done();
     });
-    it("should check if the state has value, if it doesn't, return false", () => {
-      // TODO
+    it("should check if the state has value, if it doesn't, return false", done => {
+      // Arrange
+      let actualState: boolean;
+      let invalidArray: Bug[];
+      // Act
+      mockDataService.getBugs.and.returnValue(of(invalidArray));
+      service.getBugs = true;
+      //service.getBugsData();
+      actualState = service.checkBugsLoaded();
+      // Assert
+      expect(actualState).toBeFalsy();
+      done();
     });
   })
 });
