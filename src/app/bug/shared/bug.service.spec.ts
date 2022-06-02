@@ -74,8 +74,9 @@ describe('BugService', () => {
 
   /**
    * Testing the checkBugCaught() method
+   * // Inconsistent // Work on THIS
    */
-  describe("checkBugCaught()", () => { // Inconsistent // Work on THIS
+  describe("checkBugCaught()", () => {
     data = createFakeBugArray();
     it("should find the bug", (done) => {
       // Arrange
@@ -83,13 +84,14 @@ describe('BugService', () => {
       let expectedBug = data[index];
       // Act
       mockDataService.getBugs.and.returnValue(of(data));
+      service.getBugs = true;
       service.getBugsData();
       service.checkBugCaught(expectedBug.name);
       // Assert
       service.getState().subscribe(b =>{
         b.find( bug => {
           if(bug.name === expectedBug.name){
-            expect(bug.caught).toBeTruthy();
+              expect(bug.caught).toBeTruthy();
           }
         })
       })
@@ -100,7 +102,7 @@ describe('BugService', () => {
   /**
    * Testing the findBug() method
    */
-  describe("findBug()", () => { // Inconsistent
+  describe("findBug()", () => {
     data = createFakeBugArray();
     it("should find the bug", done => {
       // Arrange
@@ -121,7 +123,7 @@ describe('BugService', () => {
   /**
    * Testing the getState() method
    */
-  describe("getState()", () => { // NO EXPECTATION
+  describe("getState()", () => {
     data = createFakeBugArray();
     it("should return the current value of the state", (done) => {
       // Arrange
