@@ -15,7 +15,7 @@ describe('BugDetailsComponent', () => {
       component: BugDetailsComponent,
       imports: [
           LoggerTestingModule,
-          RouterTestingModule.withRoutes([{ path: '', component: BugDetailsComponent}]), // spectator
+          RouterTestingModule.withRoutes([{ path: '', component: BugDetailsComponent}]),
       ],
       providers: [
         {
