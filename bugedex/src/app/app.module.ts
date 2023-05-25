@@ -20,6 +20,6 @@ import { CdkTableModule } from '@angular/cdk/table';
     CdkTableModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,BugComponent]
 })
 export class AppModule { }
