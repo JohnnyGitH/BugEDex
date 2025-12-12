@@ -43,6 +43,7 @@ testem.log
 /typings
 /.angular
 node_modules
+src/assets/config/config.json
 
 # System Files
 .DS_Store
